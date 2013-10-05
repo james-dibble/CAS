@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+ 
+    <context:component-scan base-package="JSPTest.Controllers" />
+    <mvc:annotation-driven />
+ 
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/Views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+ 
+    <bean id="dataSource"
+       class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+       p:driverClassName="com.mysql.jdbc.Driver"
+       p:url="jdbc:mysql://192.168.1.20/cas"
+       p:username="james"
+       p:password="3l3m3ntal!" />
+    
+    <bean id="TestMapper" class="JSPTest.Mapping.TestMapper" />
+    
+    <bean id="MapperDictionary" class="JavaApplicationFramework.Mapping.MapperDictionary">
+        <constructor-arg name="mappers">
+            <list>
+                <ref bean="TestMapper" />
+            </list>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="MySqlPersistenceManager" 
+          class="JavaApplicationFramework.Mapping.MySqlPersistenceManager"
+          destroy-method="Dispose">
+        <constructor-arg name="dataSource" ref="dataSource" type="org.springframework.jdbc.datasource.DriverManagerDataSource" />
+        <constructor-arg name="mappers" ref="MapperDictionary" />
+    </bean>
+    
+    <bean id="TestService" class="JSPTest.ServiceLayer.TestService">
+        <constructor-arg name="persistence" ref="MySqlPersistenceManager" />
+    </bean>
+ 
+</beans>
