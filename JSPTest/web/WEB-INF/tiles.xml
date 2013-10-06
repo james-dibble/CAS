@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition name="baseLayout" template="/WEB-INF/Views/Shared/Layout.jsp">
+        <put-attribute name="title" value="CAS - " />
+        <put-attribute name="main" value="" />
+    </definition>
+    
+    <definition name="Home/Index" extends="baseLayout">
+        <put-attribute name="title" value="CAS - Welcome" />
+        <put-attribute name="main" value="/WEB-INF/Views/Home/Index.jsp" />
+    </definition>
+</tiles-definitions>
