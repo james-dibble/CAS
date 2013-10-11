@@ -6,21 +6,13 @@ package JSPTest.Controllers;
 
 import JSPTest.Interfaces.DomainModel.ITest;
 import JSPTest.Interfaces.ServiceLayer.ITestService;
-import JSPTest.Mapping.TestMapper;
-import JSPTest.ServiceLayer.TestService;
-import JavaApplicationFramework.Mapping.ConnectionFactory;
-import JavaApplicationFramework.Mapping.IConnectionFactory;
-import JavaApplicationFramework.Mapping.IMapper;
-import JavaApplicationFramework.Mapping.IPersistenceManager;
-import JavaApplicationFramework.Mapping.MapperDictionary;
-import JavaApplicationFramework.Mapping.MySqlPersistenceManager;
-import java.sql.Connection;
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -45,5 +37,21 @@ public class HomeController
         model.addAttribute("tests", things);
         
         return "Home/Index";
+    }
+    
+    @RequestMapping("/contact")
+    public String Contact()
+    {
+        return "Home/Contact";
+    }
+    
+    @RequestMapping(value = "/contact", method = RequestMethod.POST)
+    public String ProcessContact(@RequestParam("email")String email, @RequestParam("message")String message, Model model)
+    {
+        ContactModel viewModel = new ContactModel(email, message);
+        
+        model.addAttribute("contact", viewModel);
+        
+        return "Home/ContactResponse";
     }
 }

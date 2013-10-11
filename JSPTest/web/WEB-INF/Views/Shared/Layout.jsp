@@ -11,6 +11,12 @@
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-        <tiles:insertAttribute name="main" />
+        <div class="container">
+            <tiles:insertAttribute name="header" />
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <tiles:insertAttribute name="main" />
+            </div>
+        </div>
     </body>
 </html>
