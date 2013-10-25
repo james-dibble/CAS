@@ -21,4 +21,15 @@
         <put-attribute name="title" value="CAS - Contact" />
         <put-attribute name="main" value="/WEB-INF/Views/Home/ContactResponse.jsp" />
     </definition>
+    
+    <definition name="Redirect/Index" extends="baseLayout">
+        <put-attribute name="title" value="CAS - Redirect" />
+        <put-attribute name="main" value="/WEB-INF/Views/Redirect/Index.jsp" />
+    </definition>
+    
+    <definition name="Redirect/Redirect" extends="baseLayout">
+        <put-attribute name="title" value="CAS - Redirect" />
+        <put-attribute name="main" value="/WEB-INF/Views/Redirect/Redirect.jsp" />
+    </definition>
+    
 </tiles-definitions>

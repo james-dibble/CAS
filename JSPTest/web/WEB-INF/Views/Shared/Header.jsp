@@ -13,6 +13,7 @@
     <ul class="nav navbar-nav">
       <li><a href="<c:url value='/' />">Home</a></li>
       <li><a href="<c:url value='/contact' />">Contact</a></li>
+      <li><a href="<c:url value='/redirect' />">Redirect</a></li>
     </ul>
   </div>
 </nav>

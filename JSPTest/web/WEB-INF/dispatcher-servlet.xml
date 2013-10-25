@@ -50,5 +50,7 @@
     <bean id="TestService" class="JSPTest.ServiceLayer.TestService">
         <constructor-arg name="persistence" ref="MySqlPersistenceManager" />
     </bean>
+    
+    <bean id="sitesService" class="JSPTest.ServiceLayer.KnownSitesService" />
  
 </beans>
