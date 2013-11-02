@@ -25,7 +25,7 @@ public class Client extends UniqueObject<Integer> implements IClient
     }
     
     @Override
-    public String GetName()
+    public String getName()
     {
         return _name;
     }

@@ -28,13 +28,13 @@ public class Item extends UniqueObject<Integer> implements IItem
     }
     
     @Override
-    public String GetName()
+    public String getName()
     {
         return this._name;
     }
 
     @Override
-    public int GetPrice()
+    public int getPrice()
     {
         return this._price;
     }

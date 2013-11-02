@@ -29,24 +29,8 @@ public class OrderMapper extends Mapper<IOrder>
     public String GetFindQuery(IPersistenceSearcher<IOrder> searcher)
     {
         final String query = 
-"SELECT \n" +
-"  `o`.`id`, \n" +
-"  `o`.`quantity`,\n" +
-"  `c`.`id` AS `ClientId`,\n" +
-"  `c`.`name` AS `ClientName`,\n" +
-"  `i`.`id` AS `ItemId`,\n" +
-"  `i`.`name` AS `ItemName`,\n" +
-"  `i`.`price` AS `ItemPrice`\n" +
-"FROM \n" +
-"  `orders` `o`\n" +
-"INNER JOIN\n" +
-"  `items` `i`\n" +
-"  ON \n" +
-"    `i`.`id` = `o`.`itemId`\n" +
-"INNER JOIN \n" +
-"  `clients` `c`\n" +
-"  ON \n" +
-"    `c`.`id` = `o`.`clientId`";
+"SELECT `o`.`id`, `o`.`quantity`,`c`.`id` AS `ClientId`,`c`.`name` AS `ClientName`,`i`.`id` AS `ItemId`,`i`.`name` AS `ItemName`,`i`.`price` AS `ItemPrice`\n" +
+"FROM `orders` `o` INNER JOIN `items` `i` ON  `i`.`id` = `o`.`itemId` INNER JOIN  `clients` `c` ON  `c`.`id` = `o`.`clientId`";
         
         if(searcher.HasArgument("id"))
         {
@@ -63,9 +47,9 @@ public class OrderMapper extends Mapper<IOrder>
         
         String insert = String.format(
                 insertQueryTemplate, 
-                objectToSave.GetClient().GetId(), 
-                objectToSave.GetItem().GetId(), 
-                objectToSave.GetQuantity());
+                objectToSave.getClient().GetId(), 
+                objectToSave.getItem().GetId(), 
+                objectToSave.getQuantity());
         
         ArrayList<String> queries = new ArrayList();
         queries.add(insert);

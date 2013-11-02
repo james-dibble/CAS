@@ -33,19 +33,19 @@ public class Order extends UniqueObject<Integer> implements IOrder
     }
     
     @Override
-    public IClient GetClient()
+    public IClient getClient()
     {
         return this._client;
     }
 
     @Override
-    public IItem GetItem()
+    public IItem getItem()
     {
         return this._item;
     }
 
     @Override
-    public int GetQuantity()
+    public int getQuantity()
     {
         return this._quantity;
     }

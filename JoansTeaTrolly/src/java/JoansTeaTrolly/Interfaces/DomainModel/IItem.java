@@ -9,7 +9,7 @@ import JavaApplicationFramework.Mapping.IUniqueObject;
 
 public interface IItem extends IUniqueObject<Integer>
 {
-    String GetName();
+    String getName();
     
-    int GetPrice();
+    int getPrice();
 }

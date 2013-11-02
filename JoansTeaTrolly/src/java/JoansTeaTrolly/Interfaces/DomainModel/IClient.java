@@ -9,5 +9,5 @@ import JavaApplicationFramework.Mapping.IUniqueObject;
 
 public interface IClient extends IUniqueObject<Integer>
 {
-    String GetName();
+    String getName();
 }

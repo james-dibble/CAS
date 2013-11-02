@@ -9,9 +9,9 @@ import JavaApplicationFramework.Mapping.IUniqueObject;
 
 public interface IOrder extends IUniqueObject<Integer>
 {
-    IClient GetClient();
+    IClient getClient();
     
-    IItem GetItem();
+    IItem getItem();
     
-    int GetQuantity();
+    int getQuantity();
 }
