@@ -46,6 +46,26 @@
                 margin-top: 8px;
                 position: absolute;
             }
+
+            .tt-suggestions{
+                margin-top: 5px;
+                border: solid 1px #3276b1;
+                background-color: white;
+                border-radius: 3px;
+            }
+
+            .tt-suggestion{
+                margin-top: 3px;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-top: 4px;
+                padding-bottom: 1px;
+            }
+            
+            .tt-suggestion:hover{
+                color: white;
+                background-color: #3276b1;
+            }
         </style>
     </jsp:attribute>
     <jsp:attribute name="content">
@@ -54,24 +74,24 @@
                 <form class="form-inline" role="form" method="POST" action="<c:url value='/orders/addtoorder' />">
                     <div class="form-group">
                         <label class="sr-only" for="clients">Client</label>
-                        <input id="inputClient" name="client" data-val="true" data-val-required="Please add a client." class="form-control" type="text" placeholder="Client" autocomplete="off" spellcheck="false" dir="auto" />
-                        <span class="field-validation-valid help-block" data-valmsg-for="client" data-valmsg-replace="true"></span>
+                        <input id="inputClient" name="client" class="form-control" type="text" placeholder="Client" autocomplete="off" spellcheck="false" dir="auto" />
+                        <span class="field-validation-valid help-block" data-valmsg-for="clientId" data-valmsg-replace="true"></span>
+                        <input type="hidden" name="clientId" data-val="true" data-val-required="Please add a client." />
                     </div>
                     <div class="form-group">
                         <label class="sr-only">Item</label>
-                        <input id="inputItem" name="item" data-val="true" data-val-required="Please add an item." class="form-control" type="text" placeholder="Item" autocomplete="off" spellcheck="false" dir="auto" />
-                        <span class="field-validation-valid help-block" data-valmsg-for="item" data-valmsg-replace="true"></span>
+                        <input id="inputItem" name="item" class="form-control" type="text" placeholder="Item" autocomplete="off" spellcheck="false" dir="auto" />
+                        <span class="field-validation-valid help-block" data-valmsg-for="itemId" data-valmsg-replace="true"></span>
+                        <input type="hidden" name="itemId" data-val="true" data-val-required="Please add an item." />
                     </div>
                     <div class="form-group">
                         <label class="sr-only">Quantity</label>
-                        <input id="inputQuantity" name="quantity" data-val="true" data-val-required="Please add a quantity." data-val-regex="Please enter a quantity" data-val-regex-pattern="^[0-9]+$" class="form-control" type="text" placeholder="Quantity" autocomplete="off" spellcheck="false" dir="auto" />
+                        <input id="inputQuantity" name="quantity" data-val="true" data-val-required="Please add a quantity." data-val-regex="Please enter a valid quantity" data-val-regex-pattern="^[0-9]+$" class="form-control" type="text" placeholder="Quantity" autocomplete="off" spellcheck="false" dir="auto" />
                         <span class="field-validation-valid help-block" data-valmsg-for="quantity" data-valmsg-replace="true"></span>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Add&nbsp<i class="glyphicon glyphicon-plus"></i></button>
-                    </div>
-                    <input type="hidden" name="clientId" />
-                    <input type="hidden" name="itemId" />
+                    </div>                    
                 </form>
             </div>
         </div>
@@ -242,6 +262,14 @@
                         engine: Hogan
                     }
                 ]);
+            });
+
+            $('#inputItem').change(function(){
+                $('input[name="itemId"]').attr('value', '');
+            });
+            
+            $('#inputClient').change(function(){
+                $('input[name="clientId"]').attr('value', '');
             });
 
             $('#inputItem').bind('typeahead:selected', function(obj, datum, name) {
