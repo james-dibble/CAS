@@ -12,4 +12,6 @@ public interface IClientService
     IClient GetClient(int id);
     
     Iterable<IClient> GetAllClients();
+    
+    void CreateClient(String name);
 }

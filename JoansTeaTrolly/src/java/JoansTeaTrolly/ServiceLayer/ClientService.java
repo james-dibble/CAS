@@ -6,8 +6,12 @@
 package JoansTeaTrolly.ServiceLayer;
 
 import JavaApplicationFramework.Mapping.*;
+import JoansTeaTrolly.DomainModel.Client;
 import JoansTeaTrolly.Interfaces.DomainModel.IClient;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientService implements IClientService
 {
@@ -37,6 +41,23 @@ public class ClientService implements IClientService
         Iterable<IClient> clients = this._persistence.FindCollectionOf(searcher);
 
         return clients;
+    }
+
+    @Override
+    public void CreateClient(String name)
+    {
+        IClient client = new Client(name);
+        
+        this._persistence.Add(client);
+        
+        try
+        {
+            this._persistence.Commit();
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

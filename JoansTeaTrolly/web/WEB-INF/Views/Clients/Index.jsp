@@ -4,6 +4,21 @@
     <jsp:attribute name="content">
         <div class="row">
             <div class="col-lg-12">
+                <form class="form-inline" role="form" method="POST" action="<c:url value='/clients/addclient' />">
+                    <div class="form-group">
+                        <label class="sr-only" for="clients">Client Name</label>
+                        <input id="inputClient" name="name" data-val="true" data-val-required="Please add a name." class="form-control" type="text" placeholder="Client Name" autocomplete="off" spellcheck="false" dir="auto" />
+                        <span class="field-validation-valid help-block" data-valmsg-for="name" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Add&nbsp<i class="glyphicon glyphicon-plus"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-lg-12">
                 <table class="table table-striped table-hover">
                     <c:forEach var="item" items="${clients}">
                         <tr>
@@ -13,5 +28,8 @@
                 </table>
             </div>
         </div>
+    </jsp:attribute>
+    <jsp:attribute name="script">
+        <script type="text/javascript" src="http://asset.jdibble.co.uk/script/form.js"></script>
     </jsp:attribute>
 </t:simple_layout>

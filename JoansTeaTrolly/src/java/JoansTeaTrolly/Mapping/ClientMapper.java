@@ -11,6 +11,7 @@ import JoansTeaTrolly.DomainModel.Client;
 import JoansTeaTrolly.Interfaces.DomainModel.IClient;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ClientMapper extends Mapper<IClient>
 {
@@ -34,15 +35,34 @@ public class ClientMapper extends Mapper<IClient>
     }
 
     @Override
-    public Iterable<String> GetObjectCreateQueries(IClient t)
+    public Iterable<String> GetObjectCreateQueries(IClient objectToSave)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String insertQueryTemplate = "INSERT INTO `clients` (`name`) VALUES ('%s')";
+        
+        String insert = String.format(
+                insertQueryTemplate, 
+                objectToSave.getName());
+        
+        ArrayList<String> queries = new ArrayList();
+        queries.add(insert);
+        
+        return queries;
     }
 
     @Override
-    public Iterable<String> GetObjectSaveQueries(IClient t)
+    public Iterable<String> GetObjectSaveQueries(IClient objectToSave)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String insertQueryTemplate = "UPDATE `clients` SET `name` = %s WHERE `id` = %s";
+        
+        String insert = String.format(
+                insertQueryTemplate, 
+                objectToSave.getName(),
+                objectToSave.GetId());
+        
+        ArrayList<String> queries = new ArrayList();
+        queries.add(insert);
+        
+        return queries;
     }
 
     @Override

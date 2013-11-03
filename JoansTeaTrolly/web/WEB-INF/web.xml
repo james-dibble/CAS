@@ -21,11 +21,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ClientsController</servlet-name>
-        <url-pattern>/clients</url-pattern>
-        <url-pattern>/clients/getallclients</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ItemsContoller</servlet-name>
         <url-pattern>/items/getallitems</url-pattern>
         <url-pattern>/items</url-pattern>
@@ -38,6 +33,12 @@
         <url-pattern>/orders/removeorder</url-pattern>
         <url-pattern>/orders</url-pattern>
         <url-pattern>/orders/saveorders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClientsController</servlet-name>
+        <url-pattern>/clients/getallclients</url-pattern>
+        <url-pattern>/clients/addclient</url-pattern>
+        <url-pattern>/clients</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

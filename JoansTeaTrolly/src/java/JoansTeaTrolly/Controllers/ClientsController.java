@@ -71,6 +71,12 @@ public class ClientsController extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        String path = request.getServletPath().replace("/clients", "");
+        
+        if(path.equals("/addclient"))
+        {
+            this.AddClient(request, response);
+        }
     }
 
     /**
@@ -102,5 +108,15 @@ public class ClientsController extends HttpServlet
 
         response.getWriter().write(clientsAsJson);
         response.getWriter().flush();
+    }
+    
+    private void AddClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        String clientName = request.getParameter("name");
+        
+        this._clientService.CreateClient(clientName);
+        
+        response.sendRedirect(request.getContextPath().concat("/clients"));
     }
 }
