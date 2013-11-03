@@ -170,9 +170,9 @@ public class OrdersController extends HttpServlet
             this._orderService.SaveOrders(orders);
             
             session.setAttribute("orders", null);
-
-            response.sendRedirect(request.getContextPath().concat("/orders"));
         }
+        
+        response.sendRedirect(request.getContextPath().concat("/orders/create"));
     }
 
     private void RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
