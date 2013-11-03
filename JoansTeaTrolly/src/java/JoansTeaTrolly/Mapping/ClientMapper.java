@@ -52,7 +52,7 @@ public class ClientMapper extends Mapper<IClient>
     @Override
     public Iterable<String> GetObjectSaveQueries(IClient objectToSave)
     {
-        final String insertQueryTemplate = "UPDATE `clients` SET `name` = %s WHERE `id` = %s";
+        final String insertQueryTemplate = "UPDATE `clients` SET `name` = '%s' WHERE `id` = %s";
         
         String insert = String.format(
                 insertQueryTemplate, 

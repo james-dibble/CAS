@@ -45,6 +45,7 @@ public class Bootstrapper implements ServletContextListener
             MapperDictionary mappers = new MapperDictionary(itemMapper, clientMapper, orderMapper);
             mappers.put(Order.class, orderMapper);
             mappers.put(Client.class, clientMapper);
+            mappers.put(Item.class, itemMapper);
             
             IPersistenceManager persistence = new MySqlPersistenceManager(persistenceConnection, mappers);
             

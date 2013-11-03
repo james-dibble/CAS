@@ -6,6 +6,8 @@ package JoansTeaTrolly.Controllers;
 
 import JoansTeaTrolly.Constants.Services;
 import JoansTeaTrolly.Constants.Views;
+import JoansTeaTrolly.DomainModel.Item;
+import JoansTeaTrolly.Interfaces.DomainModel.IItem;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -27,32 +29,6 @@ public class ItemsContoller extends HttpServlet
         this._itemService = (IItemService) context.getAttribute(Services.ItemService.Id());
     }
 
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        String path = request.getServletPath().replace("/items", "");
-
-        if (path.equals("/") || path.equals(""))
-        {
-            this.Index(request, response);
-        }
-
-        if (path.equals("/getallitems"))
-        {
-            this.GetAllItems(request, response);
-        }
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
@@ -67,7 +43,22 @@ public class ItemsContoller extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        processRequest(request, response);
+        String path = request.getServletPath().replace("/items", "");
+
+        if (path.equals("/") || path.equals(""))
+        {
+            this.Index(request, response);
+        }
+
+        if (path.equals("/getallitems"))
+        {
+            this.GetAllItems(request, response);
+        }
+        
+        if (path.equals("/edit"))
+        {
+            this.Edit(request, response);
+        }
     }
 
     /**
@@ -83,7 +74,12 @@ public class ItemsContoller extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        processRequest(request, response);
+        String path = request.getServletPath().replace("/items", "");
+        
+        if (path.equals("/edit"))
+        {
+            this.Save(request, response);
+        }
     }
 
     /**
@@ -113,5 +109,27 @@ public class ItemsContoller extends HttpServlet
 
         response.getWriter().write(itemsAsJson);
         response.getWriter().flush();
+    }
+    
+    private void Edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
+        
+        request.setAttribute("item", this._itemService.GetItem(itemId));
+        
+        request.getRequestDispatcher(Views.ViewBase.Path().concat("Items/Edit.jsp")).forward(request, response);
+    }
+    
+    private void Save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
+        int itemPrice = Integer.parseInt(request.getParameter("price"));
+        String itemName = request.getParameter("name");
+        
+        IItem editedItem = new Item(false, itemId, itemName, itemPrice);
+        
+        this._itemService.ChangeItem(editedItem);
+                
+        response.sendRedirect(request.getContextPath().concat("/items/edit/" + itemId));
     }
 }

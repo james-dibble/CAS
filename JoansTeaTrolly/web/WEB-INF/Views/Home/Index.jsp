@@ -15,6 +15,7 @@
                     <div class="panel-body">
                         <a href="<c:url value='/orders/create' />" class="btn btn-primary">Create Order</a>
                         <a href="<c:url value='/clients' />" class="btn btn-primary">Create User</a>
+                        <a href="<c:url value='/items' />" class="btn btn-primary">Edit Items</a>
                     </div>
                 </div>
             </div>
