@@ -28,13 +28,20 @@ public class OrderMapper extends Mapper<IOrder>
     @Override
     public String GetFindQuery(IPersistenceSearcher<IOrder> searcher)
     {
-        final String query = 
+        final String queryTemplate = 
 "SELECT `o`.`id`, `o`.`quantity`,`c`.`id` AS `ClientId`,`c`.`name` AS `ClientName`,`i`.`id` AS `ItemId`,`i`.`name` AS `ItemName`,`i`.`price` AS `ItemPrice`\n" +
 "FROM `orders` `o` INNER JOIN `items` `i` ON  `i`.`id` = `o`.`itemId` INNER JOIN  `clients` `c` ON  `c`.`id` = `o`.`clientId`";
         
-        if(searcher.HasArgument("id"))
+        String query = queryTemplate;
+        
+        if(searcher.HasArgument("Id"))
         {
-            return query + " WHERE `id` = " + searcher.GetArgument("id");
+            query = query.concat(" WHERE `id` = " + searcher.GetArgument("Id"));
+        }
+        
+        if(searcher.HasArgument("orderbyname"))
+        {
+            query = query.concat(" ORDER BY `ClientName` ASC");
         }
         
         return query;
@@ -43,7 +50,7 @@ public class OrderMapper extends Mapper<IOrder>
     @Override
     public Iterable<String> GetObjectCreateQueries(IOrder objectToSave)
     {
-        final String insertQueryTemplate = "INSERT INTO `order` (`clientId`, `itemId`, `quantity`) VALUES (%s, %s, %s)";
+        final String insertQueryTemplate = "INSERT INTO `orders` (`clientId`, `itemId`, `quantity`) VALUES (%s, %s, %s)";
         
         String insert = String.format(
                 insertQueryTemplate, 
@@ -58,9 +65,21 @@ public class OrderMapper extends Mapper<IOrder>
     }
 
     @Override
-    public Iterable<String> GetObjectSaveQueries(IOrder t)
+    public Iterable<String> GetObjectSaveQueries(IOrder objectToSave)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String insertQueryTemplate = "UPDATE `orders` SET `clientId` = %s, `itemId` = %s, `quantity` = %s WHERE `id` = %s";
+        
+        String insert = String.format(
+                insertQueryTemplate, 
+                objectToSave.getClient().GetId(), 
+                objectToSave.getItem().GetId(), 
+                objectToSave.getQuantity(),
+                objectToSave.GetId());
+        
+        ArrayList<String> queries = new ArrayList();
+        queries.add(insert);
+        
+        return queries;
     }
 
     @Override

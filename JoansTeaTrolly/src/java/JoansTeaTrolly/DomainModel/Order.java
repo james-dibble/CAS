@@ -26,7 +26,7 @@ public class Order extends UniqueObject<Integer> implements IOrder
     
     public Order(IClient client, IItem item, int quantity)
     {
-        super(false, -1);
+        super(true, -1);
         this._client = client;
         this._item = item;
         this._quantity = quantity;

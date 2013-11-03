@@ -1,19 +1,25 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <table class="table table-striped table-hover">
-            <c:forEach var="item" items="${items}">
-                <tr>
-                    <td>${item.name}</td>
-                    <td>$${item.price}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </body>
-</html>
+<t:simple_layout title="Items">
+    <jsp:attribute name="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-striped table-hover">
+                    <col width="50%">
+                    <col width="50%">
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                    </tr>
+                    <c:forEach var="item" items="${items}">
+                        <tr>
+                            <td>${item.name}</td>
+                            <td>$${item.price}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
+        </div>
+    </jsp:attribute>
+</t:simple_layout>
+

@@ -20,7 +20,7 @@ public class Client extends UniqueObject<Integer> implements IClient
     
     public Client(String name)
     {
-        super(false, -1);
+        super(true, -1);
         this._name = name;
     }
     

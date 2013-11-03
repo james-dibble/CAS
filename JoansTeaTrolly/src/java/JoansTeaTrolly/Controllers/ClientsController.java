@@ -49,19 +49,12 @@ public class ClientsController extends HttpServlet
 
         if (path.equals("/") || path.equals(""))
         {
-            request.setAttribute("clients", this._clientService.GetAllClients());
-            request.getRequestDispatcher(Views.ViewBase.Path().concat("Clients/Index.jsp")).forward(request, response);
+            this.Index(request, response);
         }
 
         if (path.equals("/getallclients"))
         {
-            request.setCharacterEncoding("utf8");
-            response.setContentType("application/json");
-
-            String clientsAsJson = new Gson().toJson(this._clientService.GetAllClients());
-
-            response.getWriter().write(clientsAsJson);
-            response.getWriter().flush();
+            this.GetAllClients(request, response);
         }
     }
 
@@ -90,4 +83,24 @@ public class ClientsController extends HttpServlet
     {
         return "Short description";
     }// </editor-fold>
+
+    
+    private void Index(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        request.setAttribute("clients", this._clientService.GetAllClients());
+        request.getRequestDispatcher(Views.ViewBase.Path().concat("Clients/Index.jsp")).forward(request, response);
+    }
+    
+    private void GetAllClients(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        request.setCharacterEncoding("utf8");
+        response.setContentType("application/json");
+
+        String clientsAsJson = new Gson().toJson(this._clientService.GetAllClients());
+
+        response.getWriter().write(clientsAsJson);
+        response.getWriter().flush();
+    }
 }

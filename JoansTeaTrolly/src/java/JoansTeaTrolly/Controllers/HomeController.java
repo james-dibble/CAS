@@ -46,9 +46,12 @@ public class HomeController extends HttpServlet
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        request.setAttribute("items", this._itemService.GetAllItems());
-        request.setAttribute("clients", this._clientService.GetAllClients());
-        request.getRequestDispatcher(Views.ViewBase.Path().concat("Home/Index.jsp")).forward(request, response);
+        String path = request.getServletPath().replace("/items", "");
+
+        if (path.equals("/") || path.equals(""))
+        {
+            this.Index(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -94,4 +97,12 @@ public class HomeController extends HttpServlet
     {
         return "Short description";
     }// </editor-fold>
+    
+    private void Index(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        request.setAttribute("items", this._itemService.GetAllItems());
+        request.setAttribute("clients", this._clientService.GetAllClients());
+        request.getRequestDispatcher(Views.ViewBase.Path().concat("Home/Index.jsp")).forward(request, response);
+    }
 }

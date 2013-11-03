@@ -25,9 +25,9 @@ public class ClientMapper extends Mapper<IClient>
     {
         final String query = "SELECT `id`, `name` FROM `clients`";
         
-        if(searcher.HasArgument("id"))
+        if(searcher.HasArgument("Id"))
         {
-            return query + " WHERE `id` = " + searcher.GetArgument("id");
+            return query + " WHERE `id` = " + searcher.GetArgument("Id");
         }
         
         return query;

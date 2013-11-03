@@ -44,19 +44,12 @@ public class ItemsContoller extends HttpServlet
 
         if (path.equals("/") || path.equals(""))
         {
-            request.setAttribute("items", this._itemService.GetAllItems());
-            request.getRequestDispatcher(Views.ViewBase.Path().concat("Items/Index.jsp")).forward(request, response);
+            this.Index(request, response);
         }
 
         if (path.equals("/getallitems"))
         {
-            request.setCharacterEncoding("utf8");
-            response.setContentType("application/json");
-
-            String itemsAsJson = new Gson().toJson(this._itemService.GetAllItems());
-
-            response.getWriter().write(itemsAsJson);
-            response.getWriter().flush();
+            this.GetAllItems(request, response);
         }
     }
 
@@ -103,4 +96,22 @@ public class ItemsContoller extends HttpServlet
     {
         return "Short description";
     }// </editor-fold>
+
+    private void Index(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        request.setAttribute("items", this._itemService.GetAllItems());
+        request.getRequestDispatcher(Views.ViewBase.Path().concat("Items/Index.jsp")).forward(request, response);
+    }
+
+    private void GetAllItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        request.setCharacterEncoding("utf8");
+        response.setContentType("application/json");
+
+        String itemsAsJson = new Gson().toJson(this._itemService.GetAllItems());
+
+        response.getWriter().write(itemsAsJson);
+        response.getWriter().flush();
+    }
 }

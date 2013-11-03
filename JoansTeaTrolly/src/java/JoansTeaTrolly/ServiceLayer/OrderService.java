@@ -36,7 +36,9 @@ public class OrderService implements IOrderService
     @Override
     public Iterable<IOrder> GetAllOrders()
     {
-        IPersistenceSearcher<IOrder> searcher = new PersistenceSearcher<IOrder>(IOrder.class);        
+        IPersistenceSearcher<IOrder> searcher = new PersistenceSearcher<IOrder>(IOrder.class);   
+        
+        searcher.put("orderbyname", null);
         
         Iterable<IOrder> orders = this._persistence.FindCollectionOf(searcher);
 
@@ -44,11 +46,20 @@ public class OrderService implements IOrderService
     }
 
     @Override
-    public void CreateOrder(IItem item, IClient client, int quantity)
+    public IOrder CreateOrder(IItem item, IClient client, int quantity)
     {
         IOrder order = new Order(client, item, quantity);
         
-        this._persistence.Add(order);
+        return order;
+    }
+
+    @Override
+    public void SaveOrders(Iterable<IOrder> orders)
+    {
+        for(IOrder order : orders)
+        {
+            this._persistence.Add(order);
+        }
         
         try
         {
@@ -58,5 +69,11 @@ public class OrderService implements IOrderService
         {
             Logger.getLogger(OrderService.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void SaveOrders(IOrder... orders)
+    {
+        this.SaveOrders(orders);
     }
 }

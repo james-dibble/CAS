@@ -22,7 +22,7 @@ public class Item extends UniqueObject<Integer> implements IItem
     
     public Item(String name, int price)
     {
-        super(false, -1);
+        super(true, -1);
         this._name = name;
         this._price = price;
     }

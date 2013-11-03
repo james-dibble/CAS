@@ -26,9 +26,9 @@ public class ItemMapper extends Mapper<IItem>
     {
         final String query = "SELECT `id`, `name`, `price` FROM `items`";
         
-        if(searcher.HasArgument("id"))
+        if(searcher.HasArgument("Id"))
         {
-            return query + " WHERE `id` = " + searcher.GetArgument("id");
+            return query + " WHERE `id` = " + searcher.GetArgument("Id");
         }
         
         return query;

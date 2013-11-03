@@ -26,14 +26,18 @@
         <url-pattern>/clients/getallclients</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>OrdersController</servlet-name>
-        <url-pattern>/orders</url-pattern>
-        <url-pattern>/orders/create</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ItemsContoller</servlet-name>
         <url-pattern>/items/getallitems</url-pattern>
         <url-pattern>/items</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrdersController</servlet-name>
+        <url-pattern>/orders/removeordersforclient</url-pattern>
+        <url-pattern>/orders/addtoorder</url-pattern>
+        <url-pattern>/orders/create</url-pattern>
+        <url-pattern>/orders/removeorder</url-pattern>
+        <url-pattern>/orders</url-pattern>
+        <url-pattern>/orders/saveorders</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

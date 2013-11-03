@@ -7,6 +7,7 @@ package JoansTeaTrolly.Listeners;
 import JavaApplicationFramework.Mapping.*;
 import JoansTeaTrolly.Constants.ContextParameters;
 import JoansTeaTrolly.Constants.Services;
+import JoansTeaTrolly.DomainModel.Order;
 import JoansTeaTrolly.Mapping.*;
 import JoansTeaTrolly.ServiceLayer.*;
 import java.sql.Connection;
@@ -42,6 +43,7 @@ public class Bootstrapper implements ServletContextListener
             IMapper orderMapper = new OrderMapper();
             
             MapperDictionary mappers = new MapperDictionary(itemMapper, clientMapper, orderMapper);
+            mappers.put(Order.class, orderMapper);
             
             IPersistenceManager persistence = new MySqlPersistenceManager(persistenceConnection, mappers);
             

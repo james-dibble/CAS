@@ -15,5 +15,9 @@ public interface IOrderService
     
     Iterable<IOrder> GetAllOrders();
     
-    void CreateOrder(IItem item, IClient client, int quantity);
+    IOrder CreateOrder(IItem item, IClient client, int quantity);
+    
+    void SaveOrders(Iterable<IOrder> orders);
+    
+    void SaveOrders(IOrder... orders);
 }
