@@ -4,9 +4,11 @@
  */
 package JoansTeaTrolly.Controllers;
 
+import JavaApplicationFramework.Servlet.ActionAttribute;
+import JavaApplicationFramework.Servlet.Controller;
 import JoansTeaTrolly.Constants.Services;
 import JoansTeaTrolly.Constants.Views;
-import JoansTeaTrolly.Controllers.ActionAttribute.HttpMethod;
+import JavaApplicationFramework.Servlet.ActionAttribute.HttpMethod;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
 import java.io.IOException;
