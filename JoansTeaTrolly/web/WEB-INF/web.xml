@@ -52,10 +52,10 @@
     </context-param>
     <context-param>
         <param-name>DatabaseUser</param-name>
-        <param-value>james</param-value>
+        <param-value>cas</param-value>
     </context-param>
     <context-param>
         <param-name>DatabasePassword</param-name>
-        <param-value>3l3m3ntal!</param-value>
+        <param-value>c0mp0n3nts&amp;s3rv1c3s</param-value>
     </context-param>
 </web-app>
