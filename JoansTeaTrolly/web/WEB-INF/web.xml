@@ -48,14 +48,14 @@
     </session-config>
     <context-param>
         <param-name>DatabaseUri</param-name>
-        <param-value>jdbc:mysql://192.168.1.20/cas</param-value>
+        <param-value>jdbc:mysql://localhost/cas</param-value>
     </context-param>
     <context-param>
         <param-name>DatabaseUser</param-name>
-        <param-value>cas</param-value>
+        <param-value>root</param-value>
     </context-param>
     <context-param>
         <param-name>DatabasePassword</param-name>
-        <param-value>c0mp0n3nts&amp;s3rv1c3s</param-value>
+        <param-value></param-value>
     </context-param>
 </web-app>
