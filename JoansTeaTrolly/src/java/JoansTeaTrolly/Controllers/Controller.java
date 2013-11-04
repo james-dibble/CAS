@@ -6,7 +6,9 @@
 package JoansTeaTrolly.Controllers;
 
 import JoansTeaTrolly.Controllers.ActionAttribute.HttpMethod;
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,7 +24,7 @@ public abstract class Controller extends HttpServlet
     protected abstract String GetBasePath();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected final void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         try
@@ -44,7 +46,7 @@ public abstract class Controller extends HttpServlet
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected final void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         try
@@ -98,5 +100,21 @@ public abstract class Controller extends HttpServlet
         }
         
         throw new IllegalStateException("This method has no action attribute.");
+    }
+    
+    protected static int GetRequestParam(HttpServletRequest request, String param)
+    {
+        return Integer.parseInt(request.getParameter(param));
+    }
+    
+    protected static void JsonResult(HttpServletRequest request, HttpServletResponse response, Object objectToReturn) throws UnsupportedEncodingException, IOException
+    {
+        request.setCharacterEncoding("utf8");
+        response.setContentType("application/json");
+
+        String json = new Gson().toJson(objectToReturn);
+
+        response.getWriter().write(json);
+        response.getWriter().flush();
     }
 }

@@ -7,13 +7,13 @@ package JoansTeaTrolly.Controllers;
 import JoansTeaTrolly.Constants.Services;
 import JoansTeaTrolly.Constants.Views;
 import JoansTeaTrolly.Controllers.ActionAttribute.HttpMethod;
+import static JoansTeaTrolly.Controllers.Controller.JsonResult;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
 
 /**
  *
@@ -43,13 +43,7 @@ public class ClientsController extends Controller
     public void GetAllClients(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        request.setCharacterEncoding("utf8");
-        response.setContentType("application/json");
-
-        String clientsAsJson = new Gson().toJson(this._clientService.GetAllClients());
-
-        response.getWriter().write(clientsAsJson);
-        response.getWriter().flush();
+        JsonResult(request, response, this._clientService.GetAllClients());
     }
     
     @ActionAttribute(Method = HttpMethod.POST, Path = "/addclient")

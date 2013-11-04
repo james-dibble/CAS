@@ -6,12 +6,10 @@ package JoansTeaTrolly.Controllers;
 
 import JoansTeaTrolly.Constants.Services;
 import JoansTeaTrolly.Constants.Views;
+import JoansTeaTrolly.DomainModel.OrdersCollection;
 import JoansTeaTrolly.Interfaces.DomainModel.*;
 import JoansTeaTrolly.Interfaces.ServiceLayer.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -50,13 +48,13 @@ public class OrdersController extends Controller
     {
         request.getRequestDispatcher(Views.ViewBase.Path().concat("Orders/Create.jsp")).forward(request, response);
     }
-    
+
     @ActionAttribute(Path = "/addtoorder", Method = ActionAttribute.HttpMethod.POST)
     public void AddToOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        int clientId = Integer.parseInt(request.getParameter("clientId"));
-        int itemId = Integer.parseInt(request.getParameter("itemId"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        int clientId = GetRequestParam(request, "clientId");
+        int itemId = GetRequestParam(request, "itemId");
+        int quantity = GetRequestParam(request, "quantity");
 
         IClient client = this._clientService.GetClient(clientId);
         IItem item = this._itemService.GetItem(itemId);
@@ -65,27 +63,18 @@ public class OrdersController extends Controller
 
         HttpSession session = request.getSession(true);
 
-        ArrayList<IOrder> orders;
+        OrdersCollection orders;
 
         if (session.getAttribute("orders") != null)
         {
-            orders = (ArrayList<IOrder>) session.getAttribute("orders");
+            orders = (OrdersCollection) session.getAttribute("orders");
         }
         else
         {
-            orders = new ArrayList<IOrder>();
+            orders = new OrdersCollection();
         }
 
         orders.add(order);
-
-        Collections.sort(orders, new Comparator<IOrder>()
-        {
-            @Override
-            public int compare(IOrder o1, IOrder o2)
-            {
-                return o1.getClient().getName().compareTo(o2.getClient().getName());
-            }
-        });
 
         session.setAttribute("orders", orders);
 
@@ -99,13 +88,13 @@ public class OrdersController extends Controller
 
         if (session.getAttribute("orders") != null)
         {
-            ArrayList<IOrder> orders = (ArrayList<IOrder>) session.getAttribute("orders");
+            OrdersCollection orders = (OrdersCollection) session.getAttribute("orders");
 
             this._orderService.SaveOrders(orders);
-            
+
             session.setAttribute("orders", null);
         }
-        
+
         response.sendRedirect(request.getContextPath().concat("/orders/create"));
     }
 
@@ -116,35 +105,18 @@ public class OrdersController extends Controller
 
         if (session.getAttribute("orders") != null)
         {
-            int clientId = Integer.parseInt(request.getParameter("clientId"));
+            int clientId = GetRequestParam(request, "clientId");
 
-            ArrayList<IOrder> existingOrders = (ArrayList<IOrder>) session.getAttribute("orders");
+            OrdersCollection orders = (OrdersCollection) session.getAttribute("orders");
 
-            ArrayList<IOrder> orders = new ArrayList();
-
-            for (IOrder order : existingOrders)
-            {
-                if (order.getClient().GetId() != clientId)
-                {
-                    orders.add(order);
-                }
-            }
-
-            Collections.sort(orders, new Comparator<IOrder>()
-            {
-                @Override
-                public int compare(IOrder o1, IOrder o2)
-                {
-                    return o1.getClient().getName().compareTo(o2.getClient().getName());
-                }
-            });
+            orders = orders.RemoveOrdersForClient(this._clientService.GetClient(clientId));
 
             session.setAttribute("orders", orders);
         }
 
         response.sendRedirect(request.getContextPath().concat("/orders/create"));
     }
-    
+
     @ActionAttribute(Path = "/removeorder", Method = ActionAttribute.HttpMethod.POST)
     public void RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -152,39 +124,18 @@ public class OrdersController extends Controller
 
         if (session.getAttribute("orders") != null)
         {
-            int clientId = Integer.parseInt(request.getParameter("clientId"));
-            int itemId = Integer.parseInt(request.getParameter("itemId"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            int clientId = GetRequestParam(request, "clientId");
+            int itemId = GetRequestParam(request, "itemId");
+            int quantity = GetRequestParam(request, "quantity");
 
-            ArrayList<IOrder> existingOrders = (ArrayList<IOrder>) session.getAttribute("orders");
+            OrdersCollection orders = (OrdersCollection) session.getAttribute("orders");
 
-            ArrayList<IOrder> orders = new ArrayList();
+            IClient client = this._clientService.GetClient(clientId);
+            IItem item = this._itemService.GetItem(itemId);
 
-            boolean orderFound = false;
+            IOrder order = this._orderService.CreateOrder(item, client, quantity);
 
-            for (IOrder order : existingOrders)
-            {
-                if (!orderFound
-                        && order.getClient().GetId() == clientId 
-                        && order.getItem().GetId() == itemId 
-                        && order.getQuantity() == quantity)
-                {
-                    orderFound = true;
-                }
-                else
-                {
-                    orders.add(order);
-                }
-            }
-
-            Collections.sort(orders, new Comparator<IOrder>()
-            {
-                @Override
-                public int compare(IOrder o1, IOrder o2)
-                {
-                    return o1.getClient().getName().compareTo(o2.getClient().getName());
-                }
-            });
+            orders = orders.RemoveOrder(order);
 
             session.setAttribute("orders", orders);
         }

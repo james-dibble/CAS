@@ -9,7 +9,6 @@ import JoansTeaTrolly.Constants.Views;
 import JoansTeaTrolly.DomainModel.Item;
 import JoansTeaTrolly.Interfaces.DomainModel.IItem;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
-import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -39,13 +38,7 @@ public class ItemsContoller extends Controller
     @ActionAttribute(Path = "/getallitems", Method = ActionAttribute.HttpMethod.GET)
     public void GetAllItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        request.setCharacterEncoding("utf8");
-        response.setContentType("application/json");
-
-        String itemsAsJson = new Gson().toJson(this._itemService.GetAllItems());
-
-        response.getWriter().write(itemsAsJson);
-        response.getWriter().flush();
+        JsonResult(request, response, this._itemService.GetAllItems());
     }
     
     @ActionAttribute(Path = "/edit", Method = ActionAttribute.HttpMethod.GET)
@@ -62,7 +55,7 @@ public class ItemsContoller extends Controller
     public void Save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
-        int itemPrice = Integer.parseInt(request.getParameter("price"));
+        int itemPrice = GetRequestParam(request, "price");
         String itemName = request.getParameter("name");
         
         IItem editedItem = new Item(false, itemId, itemName, itemPrice);
