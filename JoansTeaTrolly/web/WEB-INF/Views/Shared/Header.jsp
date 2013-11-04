@@ -17,5 +17,10 @@
             <li><a href="<c:url value='/items' />">Items</a></li>
             <li><a href="<c:url value='/orders' />">Orders</a></li>
         </ul>
+        <c:if test="${sessionScope.orders != null && sessionScope.orders.size() != 0}">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="<c:url value='/orders/create' />">Current Order</a></li>
+            </ul>
+        </c:if>
     </div>
 </nav>

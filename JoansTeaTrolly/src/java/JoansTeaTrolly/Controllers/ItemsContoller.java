@@ -1,32 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package JoansTeaTrolly.Controllers;
 
 import JavaApplicationFramework.Servlet.ActionAttribute;
 import JavaApplicationFramework.Servlet.Controller;
-import JoansTeaTrolly.Constants.Services;
+import JavaApplicationFramework.Servlet.InjectAttribute;
 import JoansTeaTrolly.Constants.Views;
 import JoansTeaTrolly.DomainModel.Item;
 import JoansTeaTrolly.Interfaces.DomainModel.IItem;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
 import java.io.IOException;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ItemsContoller extends Controller
 {
+    @InjectAttribute
     private IItemService _itemService;
 
     @Override
-    public void init()
+    protected String ControllerPath()
     {
-        ServletContext context = this.getServletContext();
-
-        this._itemService = (IItemService) context.getAttribute(Services.ItemService.Id());
+        return "/items";
     }
 
     @ActionAttribute(Path = "", Method = ActionAttribute.HttpMethod.GET)
@@ -65,11 +59,5 @@ public class ItemsContoller extends Controller
         this._itemService.ChangeItem(editedItem);
                 
         response.sendRedirect(request.getContextPath().concat("/items/edit/" + itemId));
-    }
-
-    @Override
-    protected String GetBasePath()
-    {
-        return "/items";
     }
 }

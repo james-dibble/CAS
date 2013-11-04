@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package JoansTeaTrolly.Listeners;
 
 import JavaApplicationFramework.Mapping.*;
 import JoansTeaTrolly.Constants.ContextParameters;
-import JoansTeaTrolly.Constants.Services;
 import JoansTeaTrolly.DomainModel.*;
+import JoansTeaTrolly.Interfaces.ServiceLayer.*;
 import JoansTeaTrolly.Mapping.*;
 import JoansTeaTrolly.ServiceLayer.*;
 import java.sql.Connection;
@@ -18,15 +14,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-/**
- * Web application lifecycle listener.
- *
- * @author james
- */
 @WebListener()
 public class Bootstrapper implements ServletContextListener
 {
-
     @Override
     public void contextInitialized(ServletContextEvent sce)
     {
@@ -49,9 +39,9 @@ public class Bootstrapper implements ServletContextListener
             
             IPersistenceManager persistence = new MySqlPersistenceManager(persistenceConnection, mappers);
             
-            sce.getServletContext().setAttribute(Services.ClientService.Id(), new ClientService(persistence));
-            sce.getServletContext().setAttribute(Services.ItemService.Id(), new ItemService(persistence));
-            sce.getServletContext().setAttribute(Services.OrderService.Id(), new OrderService(persistence));
+            sce.getServletContext().setAttribute(IClientService.class.getName(), new ClientService(persistence));
+            sce.getServletContext().setAttribute(IItemService.class.getName(), new ItemService(persistence));
+            sce.getServletContext().setAttribute(IOrderService.class.getName(), new OrderService(persistence));
         }
         catch (SQLException ex)
         {

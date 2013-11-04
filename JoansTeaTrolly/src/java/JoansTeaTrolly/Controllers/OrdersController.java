@@ -1,41 +1,31 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package JoansTeaTrolly.Controllers;
 
 import JavaApplicationFramework.Servlet.ActionAttribute;
 import JavaApplicationFramework.Servlet.Controller;
-import JoansTeaTrolly.Constants.Services;
+import JavaApplicationFramework.Servlet.InjectAttribute;
 import JoansTeaTrolly.Constants.Views;
 import JoansTeaTrolly.DomainModel.OrdersCollection;
 import JoansTeaTrolly.Interfaces.DomainModel.*;
 import JoansTeaTrolly.Interfaces.ServiceLayer.*;
 import java.io.IOException;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author james
- */
 public class OrdersController extends Controller
 {
+    @InjectAttribute
     private IClientService _clientService;
+    @InjectAttribute
     private IItemService _itemService;
+    @InjectAttribute
     private IOrderService _orderService;
 
     @Override
-    public void init()
+    protected String ControllerPath()
     {
-        ServletContext context = this.getServletContext();
-
-        this._clientService = (IClientService) context.getAttribute(Services.ClientService.Id());
-        this._itemService = (IItemService) context.getAttribute(Services.ItemService.Id());
-        this._orderService = (IOrderService) context.getAttribute(Services.OrderService.Id());
+        return "/orders";
     }
 
     @ActionAttribute(Path = "", Method = ActionAttribute.HttpMethod.GET)
@@ -64,18 +54,14 @@ public class OrdersController extends Controller
         IOrder order = this._orderService.CreateOrder(item, client, quantity);
 
         HttpSession session = request.getSession(true);
+        
+        OrdersCollection orders = GetSessionAttribute(session, "orders");   
 
-        OrdersCollection orders;
-
-        if (session.getAttribute("orders") != null)
-        {
-            orders = (OrdersCollection) session.getAttribute("orders");
-        }
-        else
+        if(orders == null)
         {
             orders = new OrdersCollection();
         }
-
+        
         orders.add(order);
 
         session.setAttribute("orders", orders);
@@ -88,10 +74,10 @@ public class OrdersController extends Controller
     {
         HttpSession session = request.getSession(true);
 
-        if (session.getAttribute("orders") != null)
+        OrdersCollection orders;
+        
+        if ((orders = GetSessionAttribute(session, "orders")) != null)
         {
-            OrdersCollection orders = (OrdersCollection) session.getAttribute("orders");
-
             this._orderService.SaveOrders(orders);
 
             session.setAttribute("orders", null);
@@ -105,11 +91,11 @@ public class OrdersController extends Controller
     {
         HttpSession session = request.getSession(true);
 
-        if (session.getAttribute("orders") != null)
+        OrdersCollection orders;
+        
+        if ((orders = GetSessionAttribute(session, "orders")) != null)
         {
             int clientId = GetRequestParam(request, "clientId");
-
-            OrdersCollection orders = (OrdersCollection) session.getAttribute("orders");
 
             orders = orders.RemoveOrdersForClient(this._clientService.GetClient(clientId));
 
@@ -124,13 +110,13 @@ public class OrdersController extends Controller
     {
         HttpSession session = request.getSession(true);
 
-        if (session.getAttribute("orders") != null)
+        OrdersCollection orders;
+        
+        if ((orders = GetSessionAttribute(session, "orders")) != null)
         {
             int clientId = GetRequestParam(request, "clientId");
             int itemId = GetRequestParam(request, "itemId");
             int quantity = GetRequestParam(request, "quantity");
-
-            OrdersCollection orders = (OrdersCollection) session.getAttribute("orders");
 
             IClient client = this._clientService.GetClient(clientId);
             IItem item = this._itemService.GetItem(itemId);
@@ -143,11 +129,5 @@ public class OrdersController extends Controller
         }
 
         response.sendRedirect(request.getContextPath().concat("/orders/create"));
-    }
-
-    @Override
-    protected String GetBasePath()
-    {
-        return "/orders";
     }
 }

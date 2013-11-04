@@ -1,35 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package JoansTeaTrolly.Controllers;
 
 import JavaApplicationFramework.Servlet.ActionAttribute;
-import JoansTeaTrolly.Constants.Services;
 import JoansTeaTrolly.Constants.Views;
 import JavaApplicationFramework.Servlet.ActionAttribute.HttpMethod;
 import JavaApplicationFramework.Servlet.Controller;
+import JavaApplicationFramework.Servlet.InjectAttribute;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
 import java.io.IOException;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author james
- */
 public class ClientsController extends Controller
 {
+    @InjectAttribute
     private IClientService _clientService;
-
+    
     @Override
-    public void init()
+    protected String ControllerPath()
     {
-        ServletContext context = this.getServletContext();
-
-        this._clientService = (IClientService) context.getAttribute(Services.ClientService.Id());
+        return "/clients";
     }
     
     @ActionAttribute(Path = "", Method = HttpMethod.GET)
@@ -56,11 +46,5 @@ public class ClientsController extends Controller
         this._clientService.CreateClient(clientName);
         
         response.sendRedirect(request.getContextPath().concat("/clients"));
-    }
-
-    @Override
-    protected String GetBasePath()
-    {
-        return "/clients";
     }
 }
