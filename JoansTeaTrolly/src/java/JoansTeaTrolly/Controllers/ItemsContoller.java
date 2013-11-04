@@ -13,11 +13,10 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ItemsContoller extends HttpServlet
+public class ItemsContoller extends Controller
 {
     private IItemService _itemService;
 
@@ -29,78 +28,16 @@ public class ItemsContoller extends HttpServlet
         this._itemService = (IItemService) context.getAttribute(Services.ItemService.Id());
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        String path = request.getServletPath().replace("/items", "");
-
-        if (path.equals("/") || path.equals(""))
-        {
-            this.Index(request, response);
-        }
-
-        if (path.equals("/getallitems"))
-        {
-            this.GetAllItems(request, response);
-        }
-        
-        if (path.equals("/edit"))
-        {
-            this.Edit(request, response);
-        }
-    }
-
-    /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        String path = request.getServletPath().replace("/items", "");
-        
-        if (path.equals("/edit"))
-        {
-            this.Save(request, response);
-        }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo()
-    {
-        return "Short description";
-    }// </editor-fold>
-
-    private void Index(HttpServletRequest request, HttpServletResponse response)
+    @ActionAttribute(Path = "", Method = ActionAttribute.HttpMethod.GET)
+    public void Index(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         request.setAttribute("items", this._itemService.GetAllItems());
         request.getRequestDispatcher(Views.ViewBase.Path().concat("Items/Index.jsp")).forward(request, response);
     }
 
-    private void GetAllItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    @ActionAttribute(Path = "/getallitems", Method = ActionAttribute.HttpMethod.GET)
+    public void GetAllItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         request.setCharacterEncoding("utf8");
         response.setContentType("application/json");
@@ -111,7 +48,8 @@ public class ItemsContoller extends HttpServlet
         response.getWriter().flush();
     }
     
-    private void Edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    @ActionAttribute(Path = "/edit", Method = ActionAttribute.HttpMethod.GET)
+    public void Edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
         
@@ -120,7 +58,8 @@ public class ItemsContoller extends HttpServlet
         request.getRequestDispatcher(Views.ViewBase.Path().concat("Items/Edit.jsp")).forward(request, response);
     }
     
-    private void Save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    @ActionAttribute(Path = "/edit", Method = ActionAttribute.HttpMethod.POST)
+    public void Save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
         int itemPrice = Integer.parseInt(request.getParameter("price"));
@@ -131,5 +70,11 @@ public class ItemsContoller extends HttpServlet
         this._itemService.ChangeItem(editedItem);
                 
         response.sendRedirect(request.getContextPath().concat("/items/edit/" + itemId));
+    }
+
+    @Override
+    protected String GetBasePath()
+    {
+        return "/items";
     }
 }

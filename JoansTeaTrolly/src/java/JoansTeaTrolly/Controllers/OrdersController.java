@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author james
  */
-public class OrdersController extends HttpServlet
+public class OrdersController extends Controller
 {
     private IClientService _clientService;
     private IItemService _itemService;
@@ -39,87 +38,21 @@ public class OrdersController extends HttpServlet
         this._orderService = (IOrderService) context.getAttribute(Services.OrderService.Id());
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        String path = request.getServletPath().replace("/orders", "");
-
-        if (path.equals("") || path.equals("/"))
-        {
-            this.Index(request, response);
-        }
-
-        if (path.equals("/create"))
-        {
-            request.getRequestDispatcher(Views.ViewBase.Path().concat("Orders/Create.jsp")).forward(request, response);
-        }
-    }
-
-    /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        String path = request.getServletPath().replace("/orders", "");
-
-        if (path.equals("/saveorders"))
-        {
-            this.SaveOrders(request, response);
-        }
-
-        if (path.equals("/addtoorder"))
-        {
-            this.AddToOrder(request, response);
-        }
-
-        if (path.equals("/removeordersforclient"))
-        {
-            this.RemoveOrdersForClient(request, response);
-        }
-        
-        if(path.equals("/removeorder"))
-        {
-            this.RemoveOrder(request, response);
-        }
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo()
-    {
-        return "Short description";
-    }// </editor-fold>
-
-    private void Index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    @ActionAttribute(Path = "", Method = ActionAttribute.HttpMethod.GET)
+    public void Index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         request.setAttribute("orders", this._orderService.GetAllOrders());
         request.getRequestDispatcher(Views.ViewBase.Path().concat("Orders/Index.jsp")).forward(request, response);
     }
 
-    private void AddToOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    @ActionAttribute(Path = "/create", Method = ActionAttribute.HttpMethod.GET)
+    public void Create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        request.getRequestDispatcher(Views.ViewBase.Path().concat("Orders/Create.jsp")).forward(request, response);
+    }
+    
+    @ActionAttribute(Path = "/addtoorder", Method = ActionAttribute.HttpMethod.POST)
+    public void AddToOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         int clientId = Integer.parseInt(request.getParameter("clientId"));
         int itemId = Integer.parseInt(request.getParameter("itemId"));
@@ -159,7 +92,8 @@ public class OrdersController extends HttpServlet
         response.sendRedirect(request.getContextPath().concat("/orders/create"));
     }
 
-    private void SaveOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    @ActionAttribute(Path = "/saveorders", Method = ActionAttribute.HttpMethod.POST)
+    public void SaveOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession(true);
 
@@ -175,7 +109,8 @@ public class OrdersController extends HttpServlet
         response.sendRedirect(request.getContextPath().concat("/orders/create"));
     }
 
-    private void RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    @ActionAttribute(Path = "/removeordersforclient", Method = ActionAttribute.HttpMethod.POST)
+    public void RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession(true);
 
@@ -209,8 +144,9 @@ public class OrdersController extends HttpServlet
 
         response.sendRedirect(request.getContextPath().concat("/orders/create"));
     }
-
-    private void RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    
+    @ActionAttribute(Path = "/removeorder", Method = ActionAttribute.HttpMethod.POST)
+    public void RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession(true);
 
@@ -254,5 +190,11 @@ public class OrdersController extends HttpServlet
         }
 
         response.sendRedirect(request.getContextPath().concat("/orders/create"));
+    }
+
+    @Override
+    protected String GetBasePath()
+    {
+        return "/orders";
     }
 }
