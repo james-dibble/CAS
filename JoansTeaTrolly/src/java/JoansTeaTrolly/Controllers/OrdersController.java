@@ -67,18 +67,18 @@ public class OrdersController extends Controller
 
         sessionManager.ClearOrders();
         sessionManager.CommitChanges();
-    
+
         return new RedirectToAction("/orders/create");
     }
 
     @ActionAttribute(Path = "/removeordersforclient", Method = ActionAttribute.HttpMethod.POST)
-        public IActionResult RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         OrdersSessionManager sessionManager = new OrdersSessionManager(request);
 
         int clientId = GetRequestParam(request, "clientId");
         IClient client = this._clientService.GetClient(clientId);
-        
+
         sessionManager.RemoveOrdersForClient(client);
         sessionManager.CommitChanges();
 
@@ -86,7 +86,7 @@ public class OrdersController extends Controller
     }
 
     @ActionAttribute(Path = "/removeorder", Method = ActionAttribute.HttpMethod.POST)
-        public IActionResult RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         OrdersSessionManager sessionManager = new OrdersSessionManager(request);
 

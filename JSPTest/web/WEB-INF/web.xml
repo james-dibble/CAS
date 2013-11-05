@@ -12,13 +12,29 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>TestInitParams</servlet-name>
+        <servlet-class>JSPTest.Controllers.TestInitParams</servlet-class>
+        <init-param>
+            <param-name>Email</param-name>
+            <param-value>james@jdibble.co.uk</param-value>
+        </init-param>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestInitParams</servlet-name>
+        <url-pattern>/TestInitParams</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <context-param>
+        <param-name>Email</param-name>
+        <param-value>poo@jdibble.co.uk</param-value>
+    </context-param>
 </web-app>
