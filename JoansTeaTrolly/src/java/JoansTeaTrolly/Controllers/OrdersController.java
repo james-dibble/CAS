@@ -2,14 +2,12 @@ package JoansTeaTrolly.Controllers;
 
 import JavaApplicationFramework.Servlet.*;
 import JoansTeaTrolly.Constants.View;
-import JoansTeaTrolly.DomainModel.OrdersCollection;
 import JoansTeaTrolly.Interfaces.DomainModel.*;
 import JoansTeaTrolly.Interfaces.ServiceLayer.*;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class OrdersController extends Controller
 {
@@ -30,7 +28,7 @@ public class OrdersController extends Controller
     public IActionResult Index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         Iterable<IOrder> orders = this._orderService.GetAllOrders();
-        
+
         return new ViewResult(View.Path("Orders/Index.jsp"), orders);
     }
 
@@ -52,18 +50,10 @@ public class OrdersController extends Controller
 
         IOrder order = this._orderService.CreateOrder(item, client, quantity);
 
-        HttpSession session = request.getSession(true);
-        
-        OrdersCollection orders = GetSessionAttribute(session, "orders");   
+        OrdersSessionManager sessionManager = new OrdersSessionManager(request);
 
-        if(orders == null)
-        {
-            orders = new OrdersCollection();
-        }
-        
-        orders.add(order);
-
-        session.setAttribute("orders", orders);
+        sessionManager.GetOrders().add(order);
+        sessionManager.CommitChanges();
 
         return new RedirectToAction("/orders/create");
     }
@@ -71,61 +61,46 @@ public class OrdersController extends Controller
     @ActionAttribute(Path = "/saveorders", Method = ActionAttribute.HttpMethod.POST)
     public IActionResult SaveOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        HttpSession session = request.getSession(true);
+        OrdersSessionManager sessionManager = new OrdersSessionManager(request);
 
-        OrdersCollection orders;
-        
-        if ((orders = GetSessionAttribute(session, "orders")) != null)
-        {
-            this._orderService.SaveOrders(orders);
+        this._orderService.SaveOrders(sessionManager.GetOrders());
 
-            session.setAttribute("orders", null);
-        }
-
+        sessionManager.ClearOrders();
+        sessionManager.CommitChanges();
+    
         return new RedirectToAction("/orders/create");
     }
 
     @ActionAttribute(Path = "/removeordersforclient", Method = ActionAttribute.HttpMethod.POST)
-    public IActionResult RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        public IActionResult RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        HttpSession session = request.getSession(true);
+        OrdersSessionManager sessionManager = new OrdersSessionManager(request);
 
-        OrdersCollection orders;
+        int clientId = GetRequestParam(request, "clientId");
+        IClient client = this._clientService.GetClient(clientId);
         
-        if ((orders = GetSessionAttribute(session, "orders")) != null)
-        {
-            int clientId = GetRequestParam(request, "clientId");
-
-            orders = orders.RemoveOrdersForClient(this._clientService.GetClient(clientId));
-
-            session.setAttribute("orders", orders);
-        }
+        sessionManager.RemoveOrdersForClient(client);
+        sessionManager.CommitChanges();
 
         return new RedirectToAction("/orders/create");
     }
 
     @ActionAttribute(Path = "/removeorder", Method = ActionAttribute.HttpMethod.POST)
-    public IActionResult RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        public IActionResult RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        HttpSession session = request.getSession(true);
+        OrdersSessionManager sessionManager = new OrdersSessionManager(request);
 
-        OrdersCollection orders;
-        
-        if ((orders = GetSessionAttribute(session, "orders")) != null)
-        {
-            int clientId = GetRequestParam(request, "clientId");
-            int itemId = GetRequestParam(request, "itemId");
-            int quantity = GetRequestParam(request, "quantity");
+        int clientId = GetRequestParam(request, "clientId");
+        int itemId = GetRequestParam(request, "itemId");
+        int quantity = GetRequestParam(request, "quantity");
 
-            IClient client = this._clientService.GetClient(clientId);
-            IItem item = this._itemService.GetItem(itemId);
+        IClient client = this._clientService.GetClient(clientId);
+        IItem item = this._itemService.GetItem(itemId);
 
-            IOrder order = this._orderService.CreateOrder(item, client, quantity);
+        IOrder order = this._orderService.CreateOrder(item, client, quantity);
 
-            orders = orders.RemoveOrder(order);
-
-            session.setAttribute("orders", orders);
-        }
+        sessionManager.RemoveOrder(order);
+        sessionManager.CommitChanges();
 
         return new RedirectToAction("/orders/create");
     }
