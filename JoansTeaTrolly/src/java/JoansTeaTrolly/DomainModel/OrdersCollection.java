@@ -59,8 +59,8 @@ public class OrdersCollection extends ArrayList<IOrder>
         for (IOrder order : this)
         {
             if (!orderFound
-                    && order.getClient() == orderToRemove.getClient()
-                    && order.getItem() == orderToRemove.getItem()
+                    && order.getClient().getId() == orderToRemove.getClient().getId()
+                    && order.getItem().getId() == orderToRemove.getItem().getId()
                     && order.getQuantity() == orderToRemove.getQuantity())
             {
                 orderFound = true;

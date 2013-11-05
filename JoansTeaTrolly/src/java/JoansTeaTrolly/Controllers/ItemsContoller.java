@@ -1,9 +1,7 @@
 package JoansTeaTrolly.Controllers;
 
-import JavaApplicationFramework.Servlet.ActionAttribute;
-import JavaApplicationFramework.Servlet.Controller;
-import JavaApplicationFramework.Servlet.InjectAttribute;
-import JoansTeaTrolly.Constants.Views;
+import JavaApplicationFramework.Servlet.*;
+import JoansTeaTrolly.Constants.View;
 import JoansTeaTrolly.DomainModel.Item;
 import JoansTeaTrolly.Interfaces.DomainModel.IItem;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
@@ -24,31 +22,34 @@ public class ItemsContoller extends Controller
     }
 
     @ActionAttribute(Path = "", Method = ActionAttribute.HttpMethod.GET)
-    public void Index(HttpServletRequest request, HttpServletResponse response)
+    public IActionResult Index(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        request.setAttribute("items", this._itemService.GetAllItems());
-        request.getRequestDispatcher(Views.ViewBase.Path().concat("Items/Index.jsp")).forward(request, response);
+        Iterable<IItem> items = this._itemService.GetAllItems();
+        
+        return new ViewResult(View.Path("Items/Index.jsp"), items);
     }
 
     @ActionAttribute(Path = "/getallitems", Method = ActionAttribute.HttpMethod.GET)
-    public void GetAllItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult GetAllItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        JsonResult(request, response, this._itemService.GetAllItems());
+        Iterable<IItem> items = this._itemService.GetAllItems();
+        
+        return new JsonResult(items);
     }
     
     @ActionAttribute(Path = "/edit", Method = ActionAttribute.HttpMethod.GET)
-    public void Edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult Edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
         
-        request.setAttribute("item", this._itemService.GetItem(itemId));
+        IItem item = this._itemService.GetItem(itemId);
         
-        request.getRequestDispatcher(Views.ViewBase.Path().concat("Items/Edit.jsp")).forward(request, response);
+        return new ViewResult(View.Path("Items/Edit.jsp"), item);
     }
     
     @ActionAttribute(Path = "/edit", Method = ActionAttribute.HttpMethod.POST)
-    public void Save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult Save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
         int itemPrice = GetRequestParam(request, "price");
@@ -57,7 +58,7 @@ public class ItemsContoller extends Controller
         IItem editedItem = new Item(false, itemId, itemName, itemPrice);
         
         this._itemService.ChangeItem(editedItem);
-                
-        response.sendRedirect(request.getContextPath().concat("/items/edit/" + itemId));
+                        
+        return new RedirectToAction("/items/edit/" + itemId);
     }
 }

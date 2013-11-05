@@ -1,10 +1,10 @@
 package JoansTeaTrolly.Controllers;
 
-import JavaApplicationFramework.Servlet.ActionAttribute;
-import JavaApplicationFramework.Servlet.Controller;
-import JoansTeaTrolly.Constants.Views;
+import JavaApplicationFramework.Servlet.*;
 import JavaApplicationFramework.Servlet.ActionAttribute.HttpMethod;
 import JavaApplicationFramework.Servlet.InjectAttribute;
+import JoansTeaTrolly.Constants.View;
+import JoansTeaTrolly.DomainModel.HomeViewModel;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
 import java.io.IOException;
@@ -26,11 +26,11 @@ public class HomeController extends Controller
     }
     
     @ActionAttribute(Path = "", Method = HttpMethod.GET)
-    public void Index(HttpServletRequest request, HttpServletResponse response)
+    public IActionResult Index(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        request.setAttribute("items", this._itemService.GetAllItems());
-        request.setAttribute("clients", this._clientService.GetAllClients());
-        request.getRequestDispatcher(Views.ViewBase.Path().concat("Home/Index.jsp")).forward(request, response);
+        HomeViewModel model = new HomeViewModel(this._itemService.GetAllItems(), this._clientService.GetAllClients());
+        
+        return new ViewResult(View.Path("Home/Index.jsp"), model);
     }
 }

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel-group" id="accordion">
-                    <c:set var="currentClient" value="${orders[0].client}" />
+                    <c:set var="currentClient" value="${model[0].client}" />
                     <c:set var="total" value="0" />
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -24,7 +24,7 @@
                                         <th>Item</th>
                                         <th>Quantity</th>
                                     </tr>
-                                    <c:forEach var="item" items="${orders}">
+                                    <c:forEach var="item" items="${model}">
                                         <c:if test="${item.client.id != currentClient.id}">
                                             <c:set var="currentClient" value="${item.client}" />
                                             <tr>

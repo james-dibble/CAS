@@ -1,9 +1,7 @@
 package JoansTeaTrolly.Controllers;
 
-import JavaApplicationFramework.Servlet.ActionAttribute;
-import JavaApplicationFramework.Servlet.Controller;
-import JavaApplicationFramework.Servlet.InjectAttribute;
-import JoansTeaTrolly.Constants.Views;
+import JavaApplicationFramework.Servlet.*;
+import JoansTeaTrolly.Constants.View;
 import JoansTeaTrolly.DomainModel.OrdersCollection;
 import JoansTeaTrolly.Interfaces.DomainModel.*;
 import JoansTeaTrolly.Interfaces.ServiceLayer.*;
@@ -29,20 +27,21 @@ public class OrdersController extends Controller
     }
 
     @ActionAttribute(Path = "", Method = ActionAttribute.HttpMethod.GET)
-    public void Index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult Index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        request.setAttribute("orders", this._orderService.GetAllOrders());
-        request.getRequestDispatcher(Views.ViewBase.Path().concat("Orders/Index.jsp")).forward(request, response);
+        Iterable<IOrder> orders = this._orderService.GetAllOrders();
+        
+        return new ViewResult(View.Path("Orders/Index.jsp"), orders);
     }
 
     @ActionAttribute(Path = "/create", Method = ActionAttribute.HttpMethod.GET)
-    public void Create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult Create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        request.getRequestDispatcher(Views.ViewBase.Path().concat("Orders/Create.jsp")).forward(request, response);
+        return new ViewResult(View.Path("Orders/Create.jsp"));
     }
 
     @ActionAttribute(Path = "/addtoorder", Method = ActionAttribute.HttpMethod.POST)
-    public void AddToOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult AddToOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         int clientId = GetRequestParam(request, "clientId");
         int itemId = GetRequestParam(request, "itemId");
@@ -66,11 +65,11 @@ public class OrdersController extends Controller
 
         session.setAttribute("orders", orders);
 
-        response.sendRedirect(request.getContextPath().concat("/orders/create"));
+        return new RedirectToAction("/orders/create");
     }
 
     @ActionAttribute(Path = "/saveorders", Method = ActionAttribute.HttpMethod.POST)
-    public void SaveOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult SaveOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession(true);
 
@@ -83,11 +82,11 @@ public class OrdersController extends Controller
             session.setAttribute("orders", null);
         }
 
-        response.sendRedirect(request.getContextPath().concat("/orders/create"));
+        return new RedirectToAction("/orders/create");
     }
 
     @ActionAttribute(Path = "/removeordersforclient", Method = ActionAttribute.HttpMethod.POST)
-    public void RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession(true);
 
@@ -102,11 +101,11 @@ public class OrdersController extends Controller
             session.setAttribute("orders", orders);
         }
 
-        response.sendRedirect(request.getContextPath().concat("/orders/create"));
+        return new RedirectToAction("/orders/create");
     }
 
     @ActionAttribute(Path = "/removeorder", Method = ActionAttribute.HttpMethod.POST)
-    public void RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession(true);
 
@@ -128,6 +127,6 @@ public class OrdersController extends Controller
             session.setAttribute("orders", orders);
         }
 
-        response.sendRedirect(request.getContextPath().concat("/orders/create"));
+        return new RedirectToAction("/orders/create");
     }
 }

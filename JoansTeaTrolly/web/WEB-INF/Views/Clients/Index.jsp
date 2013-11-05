@@ -20,9 +20,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <table class="table table-striped table-hover">
-                    <c:forEach var="item" items="${clients}">
+                    <c:forEach var="client" items="${model}">
                         <tr>
-                            <td>${item.name}</td>
+                            <td>${client.name}</td>
                         </tr>
                     </c:forEach>
                 </table>

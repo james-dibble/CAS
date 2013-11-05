@@ -5,19 +5,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 package JoansTeaTrolly.Constants;
 
-public enum Views
+public class View
 {
-    ViewBase("/WEB-INF/Views/");
-    
-    private final String _path;
-
-    Views(String path)
+    private static final String viewBase = "/WEB-INF/Views/";
+        
+    public static String Path(String view)
     {
-        this._path = path;
-    }
-    
-    public String Path()
-    {
-        return this._path;
+        return viewBase.concat(view);
     }
 }

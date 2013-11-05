@@ -1,10 +1,9 @@
 package JoansTeaTrolly.Controllers;
 
-import JavaApplicationFramework.Servlet.ActionAttribute;
-import JoansTeaTrolly.Constants.Views;
+import JavaApplicationFramework.Servlet.*;
 import JavaApplicationFramework.Servlet.ActionAttribute.HttpMethod;
-import JavaApplicationFramework.Servlet.Controller;
-import JavaApplicationFramework.Servlet.InjectAttribute;
+import JoansTeaTrolly.Constants.View;
+import JoansTeaTrolly.Interfaces.DomainModel.IClient;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -23,28 +22,29 @@ public class ClientsController extends Controller
     }
     
     @ActionAttribute(Path = "", Method = HttpMethod.GET)
-    public void Index(HttpServletRequest request, HttpServletResponse response)
+    public IActionResult Index(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        request.setAttribute("clients", this._clientService.GetAllClients());
-        request.getRequestDispatcher(Views.ViewBase.Path().concat("Clients/Index.jsp")).forward(request, response);
+        Iterable<IClient> clients = this._clientService.GetAllClients();
+        
+        return new ViewResult(View.Path("Clients/Index.jsp"), clients);
     }
     
     @ActionAttribute(Path = "/getallclients", Method = HttpMethod.GET)
-    public void GetAllClients(HttpServletRequest request, HttpServletResponse response)
+    public IActionResult GetAllClients(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        JsonResult(request, response, this._clientService.GetAllClients());
+        return new JsonResult(this._clientService.GetAllClients());
     }
     
     @ActionAttribute(Method = HttpMethod.POST, Path = "/addclient")
-    public void AddClient(HttpServletRequest request, HttpServletResponse response)
+    public IActionResult AddClient(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         String clientName = request.getParameter("name");
         
         this._clientService.CreateClient(clientName);
         
-        response.sendRedirect(request.getContextPath().concat("/clients"));
+        return new RedirectToAction("/clients");
     }
 }

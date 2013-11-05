@@ -30,9 +30,9 @@
                             <tr>
                                 <th>Name</th>
                             </tr>
-                            <c:forEach var="item" items="${clients}">
+                            <c:forEach var="client" items="${model.clients}">
                                 <tr>
-                                    <td>${item.name}</td>
+                                    <td>${client.name}</td>
                                 </tr>
                             </c:forEach>
                         </table>
@@ -48,7 +48,7 @@
                                 <th>Name</th>
                                 <th>Price</th>
                             </tr>
-                            <c:forEach var="item" items="${items}">
+                            <c:forEach var="item" items="${model.items}">
                                 <tr>
                                     <td>${item.name}</td>
                                     <td>$${item.price}</td>
