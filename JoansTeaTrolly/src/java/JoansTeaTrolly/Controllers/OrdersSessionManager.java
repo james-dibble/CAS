@@ -56,6 +56,6 @@ public class OrdersSessionManager
     
     public void CommitChanges()
     {
-        this._session.setAttribute(this.sessionAttributeId, this.GetOrders());
+        this._session.setAttribute(this.sessionAttributeId, this._orders);
     }
 }
