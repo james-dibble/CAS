@@ -60,4 +60,18 @@ public class ClientService implements IClientService
         }
     }
 
+    @Override
+    public void DeleteClient(IClient client) {
+        this._persistence.Delete(client);
+        
+        try
+        {
+            this._persistence.Commit();
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

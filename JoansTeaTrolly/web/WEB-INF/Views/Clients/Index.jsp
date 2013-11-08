@@ -20,9 +20,17 @@
         <div class="row">
             <div class="col-lg-12">
                 <table class="table table-striped table-hover">
+                    <col width="90%">
+                    <col width="10%">
                     <c:forEach var="client" items="${model}">
                         <tr>
                             <td>${client.name}</td>
+                            <td>
+                                <form action="<c:url value="/clients/delete" />" method="POST">
+                                    <input type="hidden" value="${client.id}" name="clientId" />
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>

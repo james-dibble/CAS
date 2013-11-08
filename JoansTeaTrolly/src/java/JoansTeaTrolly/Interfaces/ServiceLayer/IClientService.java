@@ -14,4 +14,6 @@ public interface IClientService
     Iterable<IClient> GetAllClients();
     
     void CreateClient(String name);
+    
+    void DeleteClient(IClient client);
 }

@@ -68,6 +68,11 @@ public class ItemMapper extends Mapper<IItem>
     }
 
     @Override
+    public Iterable<String> GetObjectDeleteQueries(IItem objectToDelete) {
+        throw new UnsupportedOperationException("Items cannot be deleted.");
+    }
+    
+    @Override
     protected IItem MapFromResultSet(ResultSet results)
     {
         try

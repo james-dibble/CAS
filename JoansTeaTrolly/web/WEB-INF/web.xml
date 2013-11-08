@@ -30,16 +30,17 @@
         <url-pattern>/orders/saveorders</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ClientsController</servlet-name>
-        <url-pattern>/clients/getallclients</url-pattern>
-        <url-pattern>/clients/addclient</url-pattern>
-        <url-pattern>/clients</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ItemsContoller</servlet-name>
         <url-pattern>/items/getallitems</url-pattern>
         <url-pattern>/items</url-pattern>
         <url-pattern>/items/edit/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ClientsController</servlet-name>
+        <url-pattern>/clients/getallclients</url-pattern>
+        <url-pattern>/clients/delete</url-pattern>
+        <url-pattern>/clients/addclient</url-pattern>
+        <url-pattern>/clients</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -56,6 +57,6 @@
     </context-param>
     <context-param>
         <param-name>DatabasePassword</param-name>
-        <param-value></param-value>
+        <param-value/>
     </context-param>
 </web-app>

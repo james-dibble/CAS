@@ -81,6 +81,11 @@ public class OrderMapper extends Mapper<IOrder>
         
         return queries;
     }
+    
+    @Override
+    public Iterable<String> GetObjectDeleteQueries(IOrder objectToDelete) {
+        throw new UnsupportedOperationException("Orders cannot be deleted.");
+    }
 
     @Override
     protected IOrder MapFromResultSet(ResultSet results)

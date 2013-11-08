@@ -37,6 +37,19 @@ public class ClientsController extends Controller
         return new JsonResult(this._clientService.GetAllClients());
     }
     
+    @ActionAttribute(Path = "/delete", Method = HttpMethod.POST)
+    public IActionResult DeleteClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        int clientId = GetRequestParam(request, "clientId");
+        
+        IClient client = this._clientService.GetClient(clientId);
+        
+        this._clientService.DeleteClient(client);
+        
+        return new RedirectToAction("/clients");
+    }
+    
     @ActionAttribute(Method = HttpMethod.POST, Path = "/addclient")
     public IActionResult AddClient(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
