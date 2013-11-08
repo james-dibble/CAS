@@ -8,69 +8,123 @@ package JoansTeaTrolly.DomainModel;
 import JoansTeaTrolly.Interfaces.DomainModel.IClient;
 import JoansTeaTrolly.Interfaces.DomainModel.IOrder;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashMap;
 
-public class OrdersCollection extends ArrayList<IOrder>
+public class OrdersCollection extends HashMap<IClient, ArrayList<IOrder>>
 {
-    public void Sort()
+
+    public OrdersCollection AddOrder(IOrder order)
     {
-        Collections.sort(this, new Comparator<IOrder>()
-        {
-            @Override
-            public int compare(IOrder o1, IOrder o2)
-            {
-                return o1.getClient().getName().compareTo(o2.getClient().getName());
-            }
-        });
-    }
+        ArrayList<IOrder> clientOrders = this.GetOrdersForClient(order.getClient());
 
-    @Override
-    public boolean add(IOrder order)
-    {
-        boolean result = super.add(order);
+        clientOrders.add(order);
 
-        this.Sort();
-
-        return result;
+        return this;
     }
 
     public OrdersCollection RemoveOrdersForClient(IClient client)
     {
-        OrdersCollection orders = new OrdersCollection();
+        this.remove(client);
 
-        for (IOrder order : this)
+        return this;
+    }
+
+    public OrdersCollection RemoveOrder(IOrder orderToRemove)
+    {
+        ArrayList<IOrder> clientOrders = this.GetOrdersForClient(orderToRemove.getClient());
+        ArrayList<IOrder> newOrderCollection = new ArrayList<IOrder>();
+
+        boolean orderFound = false;
+
+        for (IOrder order : clientOrders)
         {
-            if (order.getClient().GetId() != client.GetId())
+            if (!orderFound
+                    && order.getItem().getId() == orderToRemove.getItem().getId()
+                    && order.getQuantity() == orderToRemove.getQuantity())
             {
-                orders.add(order);
+                orderFound = true;
+            } 
+            else
+            {
+                newOrderCollection.add(order);
             }
+        }
+
+        this.remove(orderToRemove.getClient());
+
+        if (!newOrderCollection.isEmpty())
+        {
+            this.put(orderToRemove.getClient(), newOrderCollection);
+        }
+
+        return this;
+    }
+
+    public Iterable<IOrder> GetAllOrders()
+    {
+        ArrayList<IOrder> orders = new ArrayList<IOrder>();
+
+        for (ArrayList<IOrder> clientOrders : this.values())
+        {
+            orders.addAll(clientOrders);
         }
 
         return orders;
     }
 
-    public OrdersCollection RemoveOrder(IOrder orderToRemove)
+    @Override
+    public boolean containsKey(Object key)
     {
-        OrdersCollection orders = new OrdersCollection();
-
-        boolean orderFound = false;
-
-        for (IOrder order : this)
+        for (IClient client : this.keySet())
         {
-            if (!orderFound
-                    && order.getClient().getId() == orderToRemove.getClient().getId()
-                    && order.getItem().getId() == orderToRemove.getItem().getId()
-                    && order.getQuantity() == orderToRemove.getQuantity())
+            if (client.GetId() == ((IClient) key).GetId())
             {
-                orderFound = true;
-            }
-            else
-            {
-                orders.add(order);
+                return true;
             }
         }
-        
-        return orders;
+
+        return false;
+    }
+
+    @Override
+    public ArrayList<IOrder> get(Object key)
+    {
+        for (IClient client : this.keySet())
+        {
+            if (client.getId() == ((IClient) key).GetId())
+            {
+                return super.get(client);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public ArrayList<IOrder> remove(Object key)
+    {
+        for (IClient client : this.keySet())
+        {
+            if (client.getId() == ((IClient) key).GetId())
+            {
+                return super.remove(client);
+            }
+        }
+
+        return null;
+    }
+
+    private ArrayList<IOrder> GetOrdersForClient(IClient client)
+    {
+        if (this.containsKey(client))
+        {
+            return this.get(client);
+        }
+
+        ArrayList<IOrder> clientOrders = new ArrayList<IOrder>();
+
+        this.put(client, clientOrders);
+
+        return clientOrders;
     }
 }

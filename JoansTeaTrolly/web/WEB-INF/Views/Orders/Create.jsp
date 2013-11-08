@@ -61,7 +61,7 @@
                 padding-top: 4px;
                 padding-bottom: 1px;
             }
-            
+
             .tt-suggestion:hover{
                 color: white;
                 background-color: #3276b1;
@@ -99,7 +99,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <form class="form-inline" role="form" method="POST" action="<c:url value='/orders/saveorders' />">
-                    <button type="submit" class="btn btn-primary">Save Orders</button>
+                    <button type="submit" class="btn btn-success">Save Orders</button>
                 </form>
             </div>
         </div>
@@ -114,21 +114,21 @@
                     </c:when>
                     <c:otherwise>
                         <div class="panel-group" id="accordion">
-                            <c:set var="currentClient" value="${sessionScope.orders[0].client}" />
                             <c:set var="total" value="0" />
+                            <c:forEach var="client" items="${sessionScope.orders}">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#${currentClient.name}">
-                                            ${currentClient.name}
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#${client.key.name}">
+                                            ${client.key.name}
                                         </a>
                                         <form class="pull-right" method="POST" action="<c:url value='/orders/removeordersforclient' />">
-                                            <input type="hidden" name="clientId" value="${currentClient.id}" />
-                                            <button type="submit" class="btn btn-primary">Remove ${currentClient.name}'s Orders</button>
+                                            <input type="hidden" name="clientId" value="${client.key.id}" />
+                                            <button type="submit" class="btn btn-danger">Remove ${client.key.name}'s Orders</button>
                                         </form>
                                     </h4>
                                 </div>
-                                <div class="panel-collapse collapse" id="${currentClient.name}">
+                                <div class="panel-collapse collapse" id="${client.key.name}">
                                     <div class="panel-body">
                                         <table class="table table-striped">
                                             <col width="40%">
@@ -139,54 +139,16 @@
                                                 <th>Quantity</th>
                                                 <th></th>
                                             </tr>
-                                            <c:forEach var="item" items="${sessionScope.orders}">
-                                                <c:if test="${item.client.id != currentClient.id}">
-                                                    <c:set var="currentClient" value="${item.client}" />
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><strong>Total:</strong> $${total}</td>
-                                                        <td>
-                                                        </td>
-                                                    </tr>
-                                                    <c:set var="total" value="0" />
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#${item.client.name}">
-                                                    ${item.client.name}
-                                                </a>
-                                                <form class="pull-right" method="POST" action="<c:url value='/orders/removeordersforclient' />">
-                                                    <input type="hidden" name="clientId" value="${item.client.id}" />
-                                                    <button type="submit" class="btn btn-primary">Remove ${item.client.name}'s Orders</button>
-                                                </form>
-                                            </h4>
-                                        </div>
-                                        <div class="panel-collapse collapse" id="${item.client.name}">
-                                            <div class="panel-body">
-                                                <table class="table table-striped">
-                                                    <col width="40%">
-                                                    <col width="40%">
-                                                    <col width="20%">
-                                                    <tr>
-                                                        <th>Item</th>
-                                                        <th>Quantity</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </c:if>
-
+                                            <c:forEach var="item" items="${client.value}">
                                                 <tr>
                                                     <td>${item.item.name}</td>
                                                     <td>${item.quantity}</td>
                                                     <td>
                                                         <form class="pull-right" method="POST" action="<c:url value='/orders/removeorder' />">
-                                                            <input type="hidden" name="clientId" value="${currentClient.id}" />
+                                                            <input type="hidden" name="clientId" value="${client.key.id}" />
                                                             <input type="hidden" name="itemId" value="${item.item.id}" />
                                                             <input type="hidden" name="quantity" value="${item.quantity}" />
-                                                            <button type="submit" class="btn btn-primary">Remove Order</button>
+                                                            <button type="submit" class="btn btn-danger">Remove Order</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -201,6 +163,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </c:forEach>
                         </div>
                     </c:otherwise>
                 </c:choose>
@@ -264,11 +227,11 @@
                 ]);
             });
 
-            $('#inputItem').change(function(){
+            $('#inputItem').change(function() {
                 $('input[name="itemId"]').attr('value', '');
             });
-            
-            $('#inputClient').change(function(){
+
+            $('#inputClient').change(function() {
                 $('input[name="clientId"]').attr('value', '');
             });
 

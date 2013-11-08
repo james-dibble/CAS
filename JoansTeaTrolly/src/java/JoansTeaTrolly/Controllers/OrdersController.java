@@ -52,7 +52,7 @@ public class OrdersController extends Controller
 
         OrdersSessionManager sessionManager = new OrdersSessionManager(request);
 
-        sessionManager.GetOrders().add(order);
+        sessionManager.GetOrders().AddOrder(order);
         sessionManager.CommitChanges();
 
         return new RedirectToAction("/orders/create");
@@ -63,7 +63,7 @@ public class OrdersController extends Controller
     {
         OrdersSessionManager sessionManager = new OrdersSessionManager(request);
 
-        this._orderService.SaveOrders(sessionManager.GetOrders());
+        this._orderService.SaveOrders(sessionManager.GetOrders().GetAllOrders());
 
         sessionManager.ClearOrders();
         sessionManager.CommitChanges();
