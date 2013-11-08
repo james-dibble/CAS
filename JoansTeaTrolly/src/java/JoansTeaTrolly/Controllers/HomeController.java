@@ -7,8 +7,6 @@ import JoansTeaTrolly.Constants.View;
 import JoansTeaTrolly.DomainModel.HomeViewModel;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
-import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,9 +25,8 @@ public class HomeController extends Controller
     
     @ActionAttribute(Path = "", Method = HttpMethod.GET)
     public IActionResult Index(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
     {
-        HomeViewModel model = new HomeViewModel(this._itemService.GetAllItems(), this._clientService.GetAllClients());
+        HomeViewModel model = new HomeViewModel(this._itemService.GetAllItems(), this._clientService.GetAllClients()); 
         
         return new ViewResult(View.Path("Home/Index.jsp"), model);
     }

@@ -6,6 +6,7 @@ import JoansTeaTrolly.Constants.View;
 import JoansTeaTrolly.Interfaces.DomainModel.IClient;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +40,7 @@ public class ClientsController extends Controller
     
     @ActionAttribute(Path = "/delete", Method = HttpMethod.POST)
     public IActionResult DeleteClient(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
+            throws ServletException, IOException, SQLException
     {
         int clientId = GetRequestParam(request, "clientId");
         
@@ -52,7 +53,7 @@ public class ClientsController extends Controller
     
     @ActionAttribute(Method = HttpMethod.POST, Path = "/addclient")
     public IActionResult AddClient(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
+            throws ServletException, IOException, SQLException
     {
         String clientName = request.getParameter("name");
         

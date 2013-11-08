@@ -6,6 +6,7 @@
 package JoansTeaTrolly.Interfaces.ServiceLayer;
 
 import JoansTeaTrolly.Interfaces.DomainModel.IClient;
+import java.sql.SQLException;
 
 public interface IClientService 
 {
@@ -13,7 +14,7 @@ public interface IClientService
     
     Iterable<IClient> GetAllClients();
     
-    void CreateClient(String name);
+    void CreateClient(String name) throws SQLException;
     
-    void DeleteClient(IClient client);
+    void DeleteClient(IClient client) throws SQLException;
 }

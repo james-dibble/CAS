@@ -44,34 +44,21 @@ public class ClientService implements IClientService
     }
 
     @Override
-    public void CreateClient(String name)
+    public void CreateClient(String name) throws SQLException
     {
         IClient client = new Client(name);
         
         this._persistence.Add(client);
         
-        try
-        {
-            this._persistence.Commit();
-        }
-        catch (SQLException ex)
-        {
-            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this._persistence.Commit();
     }
 
     @Override
-    public void DeleteClient(IClient client) {
+    public void DeleteClient(IClient client) throws SQLException
+    {
         this._persistence.Delete(client);
         
-        try
-        {
-            this._persistence.Commit();
-        }
-        catch (SQLException ex)
-        {
-            Logger.getLogger(ClientService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this._persistence.Commit();
     }
 
 }
