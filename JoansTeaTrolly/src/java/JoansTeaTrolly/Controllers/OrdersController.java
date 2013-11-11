@@ -36,6 +36,8 @@ public class OrdersController extends Controller
     @ActionAttribute(Path = "/create", Method = ActionAttribute.HttpMethod.GET)
     public IActionResult Create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        new OrdersSessionManager(request, this._orderService).SyncronizeItemPrice();
+        
         return new ViewResult(View.Path("Orders/Create.jsp"));
     }
 
@@ -51,7 +53,7 @@ public class OrdersController extends Controller
 
         IOrder order = this._orderService.CreateOrder(item, client, quantity);
 
-        OrdersSessionManager sessionManager = new OrdersSessionManager(request);
+        OrdersSessionManager sessionManager = new OrdersSessionManager(request, this._orderService);
 
         sessionManager.GetOrders().AddOrder(order);
         sessionManager.CommitChanges();
@@ -62,7 +64,7 @@ public class OrdersController extends Controller
     @ActionAttribute(Path = "/saveorders", Method = ActionAttribute.HttpMethod.POST)
     public IActionResult SaveOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        OrdersSessionManager sessionManager = new OrdersSessionManager(request);
+        OrdersSessionManager sessionManager = new OrdersSessionManager(request, this._orderService);
 
         this._orderService.SaveOrders(sessionManager.GetOrders().GetAllOrders());
 
@@ -75,7 +77,7 @@ public class OrdersController extends Controller
     @ActionAttribute(Path = "/removeordersforclient", Method = ActionAttribute.HttpMethod.POST)
     public IActionResult RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        OrdersSessionManager sessionManager = new OrdersSessionManager(request);
+        OrdersSessionManager sessionManager = new OrdersSessionManager(request, this._orderService);
 
         int clientId = GetRequestParam(request, "clientId");
         IClient client = this._clientService.GetClient(clientId);
@@ -89,7 +91,7 @@ public class OrdersController extends Controller
     @ActionAttribute(Path = "/removeorder", Method = ActionAttribute.HttpMethod.POST)
     public IActionResult RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        OrdersSessionManager sessionManager = new OrdersSessionManager(request);
+        OrdersSessionManager sessionManager = new OrdersSessionManager(request, this._orderService);
 
         int clientId = GetRequestParam(request, "clientId");
         int itemId = GetRequestParam(request, "itemId");

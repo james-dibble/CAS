@@ -16,6 +16,8 @@ public interface IOrderService
     
     OrdersCollection GetAllOrders();
     
+    OrdersCollection UpdateItemPrices(OrdersCollection orders);    
+    
     IOrder CreateOrder(IItem item, IClient client, int quantity);
     
     void SaveOrders(Iterable<IOrder> orders);

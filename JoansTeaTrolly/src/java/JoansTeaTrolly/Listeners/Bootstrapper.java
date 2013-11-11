@@ -41,7 +41,9 @@ public class Bootstrapper implements ServletContextListener
             
             sce.getServletContext().setAttribute(IClientService.class.getName(), new ClientService(persistence));
             sce.getServletContext().setAttribute(IItemService.class.getName(), new ItemService(persistence));
-            sce.getServletContext().setAttribute(IOrderService.class.getName(), new OrderService(persistence));
+            sce.getServletContext().setAttribute(
+                    IOrderService.class.getName(), 
+                    new OrderService(persistence, (IItemService)sce.getServletContext().getAttribute(IItemService.class.getName())));
         }
         catch (SQLException ex)
         {

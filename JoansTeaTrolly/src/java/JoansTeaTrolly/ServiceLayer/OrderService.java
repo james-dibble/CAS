@@ -9,6 +9,7 @@ import JavaApplicationFramework.Mapping.*;
 import JoansTeaTrolly.DomainModel.Order;
 import JoansTeaTrolly.DomainModel.OrdersCollection;
 import JoansTeaTrolly.Interfaces.DomainModel.*;
+import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IOrderService;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -17,10 +18,12 @@ import java.util.logging.Logger;
 public class OrderService implements IOrderService
 {
     private final IPersistenceManager _persistence;
-
-    public OrderService(IPersistenceManager persistence)
+    private final IItemService _itemService;
+    
+    public OrderService(IPersistenceManager persistence, IItemService itemService)
     {
         this._persistence = persistence;
+        this._itemService = itemService;
     }
 
     @Override
@@ -83,5 +86,22 @@ public class OrderService implements IOrderService
     public void SaveOrders(IOrder... orders)
     {
         this.SaveOrders(orders);
+    }
+
+    @Override
+    public OrdersCollection UpdateItemPrices(OrdersCollection orders)
+    {
+        OrdersCollection updatedOrders = new OrdersCollection();
+        
+        for(IOrder order : orders.GetAllOrders())
+        {
+            updatedOrders.AddOrder(
+                    new Order(
+                        order.getClient(), 
+                        this._itemService.GetItem(order.getItem().GetId()),
+                        order.getQuantity()));
+        }
+        
+        return updatedOrders;
     }
 }
