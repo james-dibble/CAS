@@ -7,6 +7,7 @@ package JoansTeaTrolly.ServiceLayer;
 
 import JavaApplicationFramework.Mapping.*;
 import JoansTeaTrolly.DomainModel.Order;
+import JoansTeaTrolly.DomainModel.OrdersCollection;
 import JoansTeaTrolly.Interfaces.DomainModel.*;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IOrderService;
 import java.sql.SQLException;
@@ -34,15 +35,22 @@ public class OrderService implements IOrderService
     }
 
     @Override
-    public Iterable<IOrder> GetAllOrders()
+    public OrdersCollection GetAllOrders()
     {
         IPersistenceSearcher<IOrder> searcher = new PersistenceSearcher<IOrder>(IOrder.class);   
         
         searcher.put("orderbyname", null);
         
         Iterable<IOrder> orders = this._persistence.FindCollectionOf(searcher);
+        
+        OrdersCollection orderCollection = new OrdersCollection();
+        
+        for(IOrder order : orders)
+        {
+            orderCollection.AddOrder(order);
+        }
 
-        return orders;
+        return orderCollection;
     }
 
     @Override

@@ -2,6 +2,7 @@ package JoansTeaTrolly.Controllers;
 
 import JavaApplicationFramework.Servlet.*;
 import JoansTeaTrolly.Constants.View;
+import JoansTeaTrolly.DomainModel.OrdersCollection;
 import JoansTeaTrolly.Interfaces.DomainModel.*;
 import JoansTeaTrolly.Interfaces.ServiceLayer.*;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class OrdersController extends Controller
     @ActionAttribute(Path = "", Method = ActionAttribute.HttpMethod.GET)
     public IActionResult Index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        Iterable<IOrder> orders = this._orderService.GetAllOrders();
+        OrdersCollection orders = this._orderService.GetAllOrders();
 
         return new ViewResult(View.Path("Orders/Index.jsp"), orders);
     }

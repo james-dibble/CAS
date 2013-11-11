@@ -71,6 +71,20 @@ public class OrdersCollection extends HashMap<IClient, ArrayList<IOrder>>
 
         return orders;
     }
+    
+    public int GetTotalForClient(IClient client)
+    {
+        Iterable<IOrder> orders = this.GetOrdersForClient(client);
+        
+        int total = 0;
+        
+        for(IOrder order : orders)
+        {
+            total += (order.getItem().getPrice() * order.getQuantity());
+        }
+        
+        return total;
+    }
 
     @Override
     public boolean containsKey(Object key)

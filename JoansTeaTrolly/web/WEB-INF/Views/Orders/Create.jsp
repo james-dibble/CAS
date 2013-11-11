@@ -152,11 +152,10 @@
                                                         </form>
                                                     </td>
                                                 </tr>
-                                                <c:set var="total" value="${total + (item.item.price * item.quantity)}" />
                                             </c:forEach>
                                             <tr>
                                                 <td></td>
-                                                <td><strong>Total:</strong> $${total}</td>
+                                                <td><strong>Total:</strong> $${sessionScope.orders.GetTotalForClient(client.key)}</td>
                                                 <td></td>
                                             </tr>
                                         </table>

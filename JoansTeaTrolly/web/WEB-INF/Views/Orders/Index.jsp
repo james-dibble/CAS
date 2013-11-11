@@ -4,72 +4,54 @@
     <jsp:attribute name="content">
         <div class="row">
             <div class="col-lg-12">
-                <div class="panel-group" id="accordion">
-                    <c:set var="currentClient" value="${model[0].client}" />
-                    <c:set var="total" value="0" />
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#${currentClient.id}">
-                                    ${currentClient.name}
-                                </a>
-                            </h4>
+                <c:choose>
+                    <c:when test="${model == null || model.size() == 0}">
+                        <div class="alert alert-info">
+                            No orders yet.
                         </div>
-                        <div class="panel-collapse collapse" id="${currentClient.id}">
-                            <div class="panel-body">
-                                <table class="table table-striped">
-                                    <col width="50%">
-                                    <col width="50%">
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Quantity</th>
-                                    </tr>
-                                    <c:forEach var="item" items="${model}">
-                                        <c:if test="${item.client.id != currentClient.id}">
-                                            <c:set var="currentClient" value="${item.client}" />
-                                            <tr>
-                                                <td></td>
-                                                <td><strong>Total:</strong> $${total}</td>
-                                            </tr>
-                                            <c:set var="total" value="0" />
-                                        </table>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="panel-group" id="accordion">
+                            <c:forEach var="client" items="${model}">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#${client.key.name}">
+                                                ${client.key.name}
+                                            </a>
+                                            <form class="pull-right" method="POST" action="<c:url value='/orders/removeordersforclient' />">
+                                                <input type="hidden" name="clientId" value="${client.key.id}" />
+                                            </form>
+                                        </h4>
+                                    </div>
+                                    <div class="panel-collapse collapse" id="${client.key.name}">
+                                        <div class="panel-body">
+                                            <table class="table table-striped">
+                                                <col width="40%">
+                                                <col width="40%">
+                                                <col width="20%">
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Quantity</th>
+                                                </tr>
+                                                <c:forEach var="item" items="${client.value}">
+                                                    <tr>
+                                                        <td>${item.item.name}</td>
+                                                        <td>${item.quantity}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><strong>Total:</strong> $${model.GetTotalForClient(client.key)}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#${item.client.name}">
-                                            ${item.client.name}
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div class="panel-collapse collapse" id="${item.client.name}">
-                                    <div class="panel-body">
-                                        <table class="table table-striped">
-                                            <col width="50%">
-                                            <col width="50%">
-                                            <tr>
-                                                <th>Item</th>
-                                                <th>Quantity</th>
-                                            </tr>
-                                        </c:if>
-
-                                        <tr>
-                                            <td>${item.item.name}</td>
-                                            <td>${item.quantity}</td>
-                                        </tr>
-                                        <c:set var="total" value="${total + (item.item.price * item.quantity)}" />
-                                    </c:forEach>
-                                    <tr>
-                                        <td></td>
-                                        <td><strong>Total:</strong> $${total}</td>
-                                    </tr>
-                                </table>
-                            </div>
+                            </c:forEach>
                         </div>
-                    </div>
-                </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </jsp:attribute>
