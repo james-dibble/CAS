@@ -52,7 +52,7 @@ public class ItemsContoller extends Controller
     public IActionResult Save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
-        int itemPrice = GetRequestParam(request, "price");
+        int itemPrice = Controller.GetRequestParam(request, "price");
         String itemName = request.getParameter("name");
         
         IItem editedItem = new Item(false, itemId, itemName, itemPrice);

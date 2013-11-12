@@ -44,9 +44,9 @@ public class OrdersController extends Controller
     @ActionAttribute(Path = "/addtoorder", Method = ActionAttribute.HttpMethod.POST)
     public IActionResult AddToOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        int clientId = GetRequestParam(request, "clientId");
-        int itemId = GetRequestParam(request, "itemId");
-        int quantity = GetRequestParam(request, "quantity");
+        int clientId = Controller.GetRequestParam(request, "clientId");
+        int itemId = Controller.GetRequestParam(request, "itemId");
+        int quantity = Controller.GetRequestParam(request, "quantity");
 
         IClient client = this._clientService.GetClient(clientId);
         IItem item = this._itemService.GetItem(itemId);
@@ -79,7 +79,7 @@ public class OrdersController extends Controller
     {
         OrdersSessionManager sessionManager = new OrdersSessionManager(request, this._orderService);
 
-        int clientId = GetRequestParam(request, "clientId");
+        int clientId = Controller.GetRequestParam(request, "clientId");
         IClient client = this._clientService.GetClient(clientId);
 
         sessionManager.RemoveOrdersForClient(client);
@@ -93,9 +93,9 @@ public class OrdersController extends Controller
     {
         OrdersSessionManager sessionManager = new OrdersSessionManager(request, this._orderService);
 
-        int clientId = GetRequestParam(request, "clientId");
-        int itemId = GetRequestParam(request, "itemId");
-        int quantity = GetRequestParam(request, "quantity");
+        int clientId = Controller.GetRequestParam(request, "clientId");
+        int itemId = Controller.GetRequestParam(request, "itemId");
+        int quantity = Controller.GetRequestParam(request, "quantity");
 
         IClient client = this._clientService.GetClient(clientId);
         IItem item = this._itemService.GetItem(itemId);

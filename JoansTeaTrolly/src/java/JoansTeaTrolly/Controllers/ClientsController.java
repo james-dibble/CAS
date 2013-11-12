@@ -42,7 +42,7 @@ public class ClientsController extends Controller
     public IActionResult DeleteClient(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException
     {
-        int clientId = GetRequestParam(request, "clientId");
+        int clientId = Controller.GetRequestParam(request, "clientId");
         
         IClient client = this._clientService.GetClient(clientId);
         

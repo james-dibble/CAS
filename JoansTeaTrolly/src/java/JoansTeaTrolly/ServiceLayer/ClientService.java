@@ -10,8 +10,6 @@ import JoansTeaTrolly.DomainModel.Client;
 import JoansTeaTrolly.Interfaces.DomainModel.IClient;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ClientService implements IClientService
 {
