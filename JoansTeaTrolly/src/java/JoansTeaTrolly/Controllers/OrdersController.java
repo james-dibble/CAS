@@ -25,16 +25,14 @@ public class OrdersController extends Controller
         return "/orders";
     }
 
-    @ActionAttribute(Path = "", Method = ActionAttribute.HttpMethod.GET)
-    public IActionResult Index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult Index(HttpServletRequest request)
     {
         OrdersCollection orders = this._orderService.GetAllOrders();
 
         return new ViewResult(View.Path("Orders/Index.jsp"), orders);
     }
 
-    @ActionAttribute(Path = "/create", Method = ActionAttribute.HttpMethod.GET)
-    public IActionResult Create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult Create(HttpServletRequest request)
     {
         new OrdersSessionManager(request, this._orderService).SyncronizeItemPrice();
         

@@ -22,18 +22,14 @@ public class ClientsController extends Controller
         return "/clients";
     }
     
-    @ActionAttribute(Path = "", Method = HttpMethod.GET)
-    public IActionResult Index(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
+    public IActionResult Index(HttpServletRequest request)
     {
         Iterable<IClient> clients = this._clientService.GetAllClients();
         
         return new ViewResult(View.Path("Clients/Index.jsp"), clients);
     }
     
-    @ActionAttribute(Path = "/getallclients", Method = HttpMethod.GET)
-    public IActionResult GetAllClients(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
+    public IActionResult GetAllClients(HttpServletRequest request)
     {
         return new JsonResult(this._clientService.GetAllClients());
     }

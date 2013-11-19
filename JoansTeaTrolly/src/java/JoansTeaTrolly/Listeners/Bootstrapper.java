@@ -1,6 +1,7 @@
 package JoansTeaTrolly.Listeners;
 
 import JavaApplicationFramework.Mapping.*;
+import JavaApplicationFramework.Servlet.ServletBootstrapper;
 import JoansTeaTrolly.Constants.ContextParameters;
 import JoansTeaTrolly.Interfaces.ServiceLayer.*;
 import JoansTeaTrolly.Mapping.*;
@@ -9,16 +10,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @WebListener()
-public class Bootstrapper implements ServletContextListener
+public class Bootstrapper extends ServletBootstrapper
 {
     @Override
-    public void contextInitialized(ServletContextEvent sce)
+    protected void InitContext(ServletContextEvent sce)
     {
+        ServletContext context = sce.getServletContext();
+        
         try
         {
             Connection persistenceConnection = 
@@ -35,20 +38,15 @@ public class Bootstrapper implements ServletContextListener
             
             IPersistenceManager persistence = new MySqlPersistenceManager(persistenceConnection, mappers);
             
-            sce.getServletContext().setAttribute(IClientService.class.getName(), new ClientService(persistence));
-            sce.getServletContext().setAttribute(IItemService.class.getName(), new ItemService(persistence));
-            sce.getServletContext().setAttribute(
-                    IOrderService.class.getName(), 
-                    new OrderService(persistence, (IItemService)sce.getServletContext().getAttribute(IItemService.class.getName())));
+            IItemService itemService = new ItemService(persistence);
+            
+            this.Bind(new ClientService(persistence), IClientService.class, context);
+            this.Bind(itemService, IItemService.class, context);
+            this.Bind(new OrderService(persistence, itemService), IOrderService.class, context);
         }
         catch (SQLException ex)
         {
             Logger.getLogger(Bootstrapper.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce)
-    {
     }
 }

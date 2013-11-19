@@ -21,25 +21,21 @@ public class ItemsContoller extends Controller
         return "/items";
     }
 
-    @ActionAttribute(Path = "", Method = ActionAttribute.HttpMethod.GET)
-    public IActionResult Index(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
+    public IActionResult Index(HttpServletRequest request)
     {
         Iterable<IItem> items = this._itemService.GetAllItems();
         
         return new ViewResult(View.Path("Items/Index.jsp"), items);
     }
 
-    @ActionAttribute(Path = "/getallitems", Method = ActionAttribute.HttpMethod.GET)
-    public IActionResult GetAllItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult GetAllItems(HttpServletRequest request)
     {
         Iterable<IItem> items = this._itemService.GetAllItems();
         
         return new JsonResult(items);
     }
     
-    @ActionAttribute(Path = "/edit", Method = ActionAttribute.HttpMethod.GET)
-    public IActionResult Edit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult Edit(HttpServletRequest request)
     {
         int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
         
