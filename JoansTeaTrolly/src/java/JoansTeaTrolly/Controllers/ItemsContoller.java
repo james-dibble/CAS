@@ -5,10 +5,7 @@ import JoansTeaTrolly.Constants.View;
 import JoansTeaTrolly.DomainModel.Item;
 import JoansTeaTrolly.Interfaces.DomainModel.IItem;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
-import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class ItemsContoller extends Controller
 {
@@ -45,7 +42,7 @@ public class ItemsContoller extends Controller
     }
     
     @ActionAttribute(Path = "/edit", Method = ActionAttribute.HttpMethod.POST)
-    public IActionResult Save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult Save(HttpServletRequest request)
     {
         int itemId = Integer.parseInt(request.getPathInfo().replace("/", ""));
         int itemPrice = Controller.GetRequestParam(request, "price");

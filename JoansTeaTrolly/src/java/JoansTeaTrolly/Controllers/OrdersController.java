@@ -5,10 +5,7 @@ import JoansTeaTrolly.Constants.View;
 import JoansTeaTrolly.DomainModel.OrdersCollection;
 import JoansTeaTrolly.Interfaces.DomainModel.*;
 import JoansTeaTrolly.Interfaces.ServiceLayer.*;
-import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class OrdersController extends Controller
 {
@@ -40,7 +37,7 @@ public class OrdersController extends Controller
     }
 
     @ActionAttribute(Path = "/addtoorder", Method = ActionAttribute.HttpMethod.POST)
-    public IActionResult AddToOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult AddToOrder(HttpServletRequest request)
     {
         int clientId = Controller.GetRequestParam(request, "clientId");
         int itemId = Controller.GetRequestParam(request, "itemId");
@@ -60,7 +57,7 @@ public class OrdersController extends Controller
     }
 
     @ActionAttribute(Path = "/saveorders", Method = ActionAttribute.HttpMethod.POST)
-    public IActionResult SaveOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult SaveOrders(HttpServletRequest request)
     {
         OrdersSessionManager sessionManager = new OrdersSessionManager(request, this._orderService);
 
@@ -73,7 +70,7 @@ public class OrdersController extends Controller
     }
 
     @ActionAttribute(Path = "/removeordersforclient", Method = ActionAttribute.HttpMethod.POST)
-    public IActionResult RemoveOrdersForClient(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult RemoveOrdersForClient(HttpServletRequest request)
     {
         OrdersSessionManager sessionManager = new OrdersSessionManager(request, this._orderService);
 
@@ -87,7 +84,7 @@ public class OrdersController extends Controller
     }
 
     @ActionAttribute(Path = "/removeorder", Method = ActionAttribute.HttpMethod.POST)
-    public IActionResult RemoveOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public IActionResult RemoveOrder(HttpServletRequest request)
     {
         OrdersSessionManager sessionManager = new OrdersSessionManager(request, this._orderService);
 
