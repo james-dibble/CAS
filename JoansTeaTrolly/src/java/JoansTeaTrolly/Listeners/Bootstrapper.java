@@ -1,7 +1,7 @@
 package JoansTeaTrolly.Listeners;
 
-import JavaApplicationFramework.Mapping.*;
-import JavaApplicationFramework.Servlet.ServletBootstrapper;
+import JoansTeaTrolly.Framework.Mapping.*;
+import JoansTeaTrolly.Framework.Servlet.ServletBootstrapper;
 import JoansTeaTrolly.Constants.ContextParameters;
 import JoansTeaTrolly.Interfaces.ServiceLayer.*;
 import JoansTeaTrolly.Mapping.*;

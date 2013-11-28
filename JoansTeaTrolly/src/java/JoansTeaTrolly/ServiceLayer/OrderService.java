@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 package JoansTeaTrolly.ServiceLayer;
 
-import JavaApplicationFramework.Mapping.*;
+import JoansTeaTrolly.Framework.Mapping.*;
 import JoansTeaTrolly.DomainModel.Order;
 import JoansTeaTrolly.DomainModel.OrdersCollection;
 import JoansTeaTrolly.Interfaces.DomainModel.*;

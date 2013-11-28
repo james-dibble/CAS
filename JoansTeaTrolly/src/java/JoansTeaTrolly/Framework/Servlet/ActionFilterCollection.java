@@ -1,17 +1,12 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IOrder.java" company="James Dibble">
+// <copyright file="ActionFilterCollection.java" company="James Dibble">
 //    Copyright 2013 James Dibble
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-package JoansTeaTrolly.Interfaces.DomainModel;
+package JoansTeaTrolly.Framework.Servlet;
 
-import JoansTeaTrolly.Framework.Mapping.IUniqueObject;
+import java.util.ArrayList;
 
-public interface IOrder extends IUniqueObject<Integer>
+public class ActionFilterCollection extends ArrayList<IActionFilter>
 {
-    IClient getClient();
-    
-    IItem getItem();
-    
-    int getQuantity();
 }

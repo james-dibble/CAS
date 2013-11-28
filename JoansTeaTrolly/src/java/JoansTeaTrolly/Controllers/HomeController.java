@@ -1,7 +1,6 @@
 package JoansTeaTrolly.Controllers;
 
-import JavaApplicationFramework.Servlet.*;
-import JavaApplicationFramework.Servlet.InjectAttribute;
+import JoansTeaTrolly.Framework.Servlet.*;
 import JoansTeaTrolly.Constants.View;
 import JoansTeaTrolly.DomainModel.HomeViewModel;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;

@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 package JoansTeaTrolly.DomainModel;
 
-import JavaApplicationFramework.Mapping.UniqueObject;
+import JoansTeaTrolly.Framework.Mapping.UniqueObject;
 import JoansTeaTrolly.Interfaces.DomainModel.IClient;
 import JoansTeaTrolly.Interfaces.DomainModel.IItem;
 import JoansTeaTrolly.Interfaces.DomainModel.IOrder;

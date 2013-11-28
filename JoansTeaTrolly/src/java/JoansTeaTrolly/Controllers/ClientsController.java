@@ -1,8 +1,8 @@
 package JoansTeaTrolly.Controllers;
 
-import JavaApplicationFramework.Servlet.*;
-import JavaApplicationFramework.Servlet.ActionAttribute.HttpMethod;
+import JoansTeaTrolly.Framework.Servlet.*;
 import JoansTeaTrolly.Constants.View;
+import JoansTeaTrolly.Framework.Servlet.ActionAttribute.HttpMethod;
 import JoansTeaTrolly.Interfaces.DomainModel.IClient;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IClientService;
 import java.sql.SQLException;

@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 package JoansTeaTrolly.ServiceLayer;
 
-import JavaApplicationFramework.Mapping.*;
+import JoansTeaTrolly.Framework.Mapping.*;
 import JoansTeaTrolly.Interfaces.DomainModel.IItem;
 import JoansTeaTrolly.Interfaces.ServiceLayer.IItemService;
 import java.sql.SQLException;

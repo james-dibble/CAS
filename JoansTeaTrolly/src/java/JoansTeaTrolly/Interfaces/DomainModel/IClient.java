@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 package JoansTeaTrolly.Interfaces.DomainModel;
 
-import JavaApplicationFramework.Mapping.IUniqueObject;
+import JoansTeaTrolly.Framework.Mapping.IUniqueObject;
 
 public interface IClient extends IUniqueObject<Integer>
 {

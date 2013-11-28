@@ -1,6 +1,6 @@
 package JoansTeaTrolly.Controllers;
 
-import JavaApplicationFramework.Servlet.*;
+import JoansTeaTrolly.Framework.Servlet.*;
 import JoansTeaTrolly.Constants.View;
 import JoansTeaTrolly.DomainModel.Item;
 import JoansTeaTrolly.Interfaces.DomainModel.IItem;

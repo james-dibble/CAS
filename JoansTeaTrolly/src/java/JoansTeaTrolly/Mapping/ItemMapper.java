@@ -5,8 +5,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 package JoansTeaTrolly.Mapping;
 
-import JavaApplicationFramework.Mapping.IPersistenceSearcher;
-import JavaApplicationFramework.Mapping.Mapper;
+import JoansTeaTrolly.Framework.Mapping.IPersistenceSearcher;
+import JoansTeaTrolly.Framework.Mapping.Mapper;
 import JoansTeaTrolly.DomainModel.Item;
 import JoansTeaTrolly.Interfaces.DomainModel.IItem;
 import java.sql.ResultSet;
