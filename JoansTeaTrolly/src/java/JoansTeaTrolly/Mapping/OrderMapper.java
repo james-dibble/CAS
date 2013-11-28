@@ -29,8 +29,8 @@ public class OrderMapper extends Mapper<IOrder>
     public String GetFindQuery(IPersistenceSearcher<IOrder> searcher)
     {
         final String queryTemplate = 
-"SELECT `o`.`id`, `o`.`quantity`,`c`.`id` AS `ClientId`,`c`.`name` AS `ClientName`,`i`.`id` AS `ItemId`,`i`.`name` AS `ItemName`,`i`.`price` AS `ItemPrice`\n" +
-"FROM `orders` `o` INNER JOIN `items` `i` ON  `i`.`id` = `o`.`itemId` INNER JOIN  `clients` `c` ON  `c`.`id` = `o`.`clientId`";
+"SELECT `o`.`id`, `o`.`quantity`,`o`.`clientId` AS `ClientId`,`c`.`name` AS `ClientName`,`i`.`id` AS `ItemId`,`i`.`name` AS `ItemName`,`i`.`price` AS `ItemPrice`\n" +
+"FROM `orders` `o` INNER JOIN `items` `i` ON  `i`.`id` = `o`.`itemId` LEFT JOIN  `clients` `c` ON  `c`.`id` = `o`.`clientId`";
         
         String query = queryTemplate;
         

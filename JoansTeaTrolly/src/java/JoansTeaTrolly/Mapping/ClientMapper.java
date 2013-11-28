@@ -62,19 +62,14 @@ public class ClientMapper extends Mapper<IClient> {
 
     @Override
     public Iterable<String> GetObjectDeleteQueries(IClient objectToDelete) {
-        final String deleteOrdersTemplate = "DELETE FROM `orders` WHERE `clientId` = %s";
         final String deleteClientTemplate = "DELETE FROM `clients` WHERE `id` = %s";
-        
-        String deleteClientOrders = String.format(
-                deleteOrdersTemplate,
-                objectToDelete.GetId());
         
         String deleteClient = String.format(
                 deleteClientTemplate,
                 objectToDelete.GetId());
         
         ArrayList<String> queries = new ArrayList();
-        queries.add(deleteClientOrders);
+
         queries.add(deleteClient);
 
         return queries;

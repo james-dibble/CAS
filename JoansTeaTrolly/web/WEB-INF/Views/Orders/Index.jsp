@@ -13,18 +13,26 @@
                     <c:otherwise>
                         <div class="panel-group" id="accordion">
                             <c:forEach var="client" items="${model}">
+                                <c:choose>
+                                    <c:when test="${client.key.name == null}">
+                                        <c:set var="clientName" value="Ex-Clients" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="clientName" value="${client.key.name}" />
+                                    </c:otherwise>
+                                </c:choose>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#${client.key.name}">
-                                                ${client.key.name}
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#${clientName}">
+                                                ${clientName}
                                             </a>
                                             <form class="pull-right" method="POST" action="<c:url value='/orders/removeordersforclient' />">
                                                 <input type="hidden" name="clientId" value="${client.key.id}" />
                                             </form>
                                         </h4>
                                     </div>
-                                    <div class="panel-collapse collapse" id="${client.key.name}">
+                                    <div class="panel-collapse collapse" id="${clientName}">
                                         <div class="panel-body">
                                             <table class="table table-striped">
                                                 <col width="40%">
