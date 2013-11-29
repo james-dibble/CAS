@@ -15,7 +15,7 @@
                             <c:forEach var="client" items="${model}">
                                 <c:choose>
                                     <c:when test="${client.key.name == null}">
-                                        <c:set var="clientName" value="Ex-Clients" />
+                                        <c:set var="clientName" value="Ex-Client-${client.key.id}" />
                                     </c:when>
                                     <c:otherwise>
                                         <c:set var="clientName" value="${client.key.name}" />

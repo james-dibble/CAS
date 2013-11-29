@@ -16,6 +16,24 @@ import java.util.logging.Logger;
  */
 public class ConnectionFactory implements IConnectionFactory
 {
+    private final String _connectionString;
+    private final String _userName;
+    private final String _password;
+    
+    public ConnectionFactory()
+    {
+        this._connectionString = null;
+        this._userName = null;
+        this._password = null;
+    }
+    
+    public ConnectionFactory(String connectionString, String userName, String password)
+    {
+        this._connectionString = connectionString;
+        this._userName = userName;
+        this._password = password;
+    }
+    
     /**
      * Create a connection to the specified database.
      *
@@ -37,5 +55,11 @@ public class ConnectionFactory implements IConnectionFactory
         }
 
         return null;
+    }
+
+    @Override
+    public Connection CreateConnection() throws SQLException
+    {
+        return this.CreateConnection(this._connectionString, this._userName, this._password);
     }
 }

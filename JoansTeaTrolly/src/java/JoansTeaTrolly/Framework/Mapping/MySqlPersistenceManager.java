@@ -19,19 +19,20 @@ import java.util.Stack;
  */
 public final class MySqlPersistenceManager implements IPersistenceManager
 {
-    private final Connection _connection;
+    private final IConnectionFactory _connectionFactory;
     private final MapperDictionary _mappers;
+    private Connection _connection;
     private List<String> _statementsToCommit;
 
     /**
      * Initialises a new instance of the MySqlPersistenceManager class.
      *
-     * @param connection A JDBC connection to the MySQL source.
+     * @param connectionFactory A JDBC connection to the MySQL source.
      * @param mappers A collection of know type mappers.
      */
-    public MySqlPersistenceManager(Connection connection, MapperDictionary mappers)
+    public MySqlPersistenceManager(IConnectionFactory connectionFactory, MapperDictionary mappers)
     {
-        this._connection = connection;
+        this._connectionFactory = connectionFactory;
         this._mappers = mappers;
         this._statementsToCommit = new Stack<String>();
     }
@@ -47,7 +48,7 @@ public final class MySqlPersistenceManager implements IPersistenceManager
 
         try
         {
-            Statement statement = this._connection.createStatement();
+            Statement statement = this.GetConnection().createStatement();
 
             ResultSet results = statement.executeQuery(query);
 
@@ -70,7 +71,7 @@ public final class MySqlPersistenceManager implements IPersistenceManager
 
         try
         {
-            Statement statement = this._connection.createStatement();
+            Statement statement = this.GetConnection().createStatement();
 
             ResultSet results = statement.executeQuery(query);
 
@@ -126,19 +127,19 @@ public final class MySqlPersistenceManager implements IPersistenceManager
     {
         try
         {
-            this._connection.setAutoCommit(false);
+            this.GetConnection().setAutoCommit(false);
             
             for (String statement : this._statementsToCommit)
             {
-                Statement sqlStatement = this._connection.createStatement();
+                Statement sqlStatement = this.GetConnection().createStatement();
                 sqlStatement.executeUpdate(statement);
             }
             
-            this._connection.commit();
+            this.GetConnection().commit();
         }
         finally
         {
-            this._connection.setAutoCommit(true);
+            this.GetConnection().setAutoCommit(true);
             this._statementsToCommit.clear();
         }
     }
@@ -146,9 +147,19 @@ public final class MySqlPersistenceManager implements IPersistenceManager
     @Override
     public void Dispose() throws SQLException
     {
-        this._connection.close();
+        this.GetConnection().close();
     }
 
+    private Connection GetConnection() throws SQLException
+    {
+        if(this._connection == null)
+        {
+            this._connection = this._connectionFactory.CreateConnection();
+        }
+        
+        return this._connection;
+    }
+    
     private IMapper GetMapperForType(Class type)
     {
         IMapper mapper = this._mappers.get(type);

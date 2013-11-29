@@ -20,4 +20,12 @@ public interface IConnectionFactory
      * @return
      */
     Connection CreateConnection(String connectionString, String userName, String password) throws SQLException;
+    
+    /**
+     * Create a connection to the specified database.
+     *
+     * @param connectionString
+     * @return
+     */
+    Connection CreateConnection() throws SQLException;
 }
